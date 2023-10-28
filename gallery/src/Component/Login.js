@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import React, { useState, useEffect } from 'react';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBEQdYBQMYlhEQ14aGG7D_byvfZHKcg49w",
@@ -8,10 +9,9 @@ const firebaseConfig = {
     projectId: "reactgallery-9edc2",
     storageBucket: "reactgallery-9edc2.appspot.com",
     messagingSenderId: "706048848393",
-    appId: "1:706048848393:web:823768550e30f1911d3ed8"
+    appId: "1:706048848393:web:9ac3b43573cf9f811d3ed8"
 };
 
-// Firebase 초기화
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 } else {

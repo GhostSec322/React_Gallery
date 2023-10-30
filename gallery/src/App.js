@@ -5,8 +5,8 @@ import Login from './Component/Login';
 function App() {
   return (
     <div className="App">
-      <Pixabay />
       <Login/>
+      <Pixabay />
     </div>
   );
 }

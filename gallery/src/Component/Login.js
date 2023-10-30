@@ -17,7 +17,9 @@ export default function Login(){
   return (
     <div>
     {value?<Home/>:
-    <button onClick={handleClick}>Signin With Google</button>
+    <div> <button onClick={handleClick}>Signin With Google</button>
+    <Pixabay/></div>
+   
     }
 </div>
   )

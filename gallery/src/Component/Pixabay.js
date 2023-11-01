@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import Login from './Login';
 const Pixabay = () => {
   const [query, setQuery] = useState('');
   const [images, setImages] = useState([]);
@@ -67,8 +67,10 @@ const Pixabay = () => {
           <button onClick={handleDownload}>Download</button>
         </div>
       )}
+        <Login/>
     </div>
-  );
+
+);
 };
 
 export default Pixabay;

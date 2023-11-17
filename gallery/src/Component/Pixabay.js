@@ -5,7 +5,7 @@ const Pixabay = () => {
   const [query, setQuery] = useState('');
   const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
- let key= '39765109-40001bca1fc18e8827b3c5878';
+  const key = '39765109-40001bca1fc18e8827b3c5878';
   useEffect(() => {
     const fetchRandomImages = async () => {
       const API_KEY = key;
@@ -67,10 +67,10 @@ const Pixabay = () => {
           <button onClick={handleDownload}>Download</button>
         </div>
       )}
-        <Login/>
+      <Login />
     </div>
 
-);
+  );
 };
 
 export default Pixabay;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { auth, provider } from "./config";
+import { auth, provider } from "../Firebase/config";
 import { signInWithPopup } from "firebase/auth";
 import Home from "./Home";
 

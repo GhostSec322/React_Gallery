@@ -2,13 +2,13 @@
 import { initializeApp } from "firebase/app";
 import{getAuth,GoogleAuthProvider}from "firebase/auth"
 const firebaseConfig = {
-  apiKey: "AIzaSyCduxZYeyxxHMLKbLW0J62YQ9I_30-krsk",
-  authDomain: "project-anyang.firebaseapp.com",
-  projectId: "project-anyang",
-  storageBucket: "project-anyang.appspot.com",
-  messagingSenderId: "1054085735051",
-  appId: "1:1054085735051:web:47d3dc79652f021c54ea8e",
-  measurementId: "G-N18Z202PGL"
+  apiKey: "AIzaSyAzNXgIXd5e_OqAacTD5xUr2k0APCiM6-A",
+  authDomain: "gallery-using-react.firebaseapp.com",
+  databaseURL: "https://gallery-using-react-default-rtdb.firebaseio.com",
+  projectId: "gallery-using-react",
+  storageBucket: "gallery-using-react.appspot.com",
+  messagingSenderId: "435514113224",
+  appId: "1:435514113224:web:e76dceafeb1d001ed779fd"
 };
 
 // Initialize Firebase

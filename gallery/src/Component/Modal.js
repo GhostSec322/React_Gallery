@@ -34,7 +34,7 @@ const Modal = () => {
 
   // 모달 닫기 함수
   const closeModal = () => {
-    setModalOpen(false); // 모달 창 열림 상태를 false로 설정
+    // 모달 창 열림 상태를 false로 설정
     setCategory(''); // 카테고리 state 초기화
     Setfile(''); // 파일 state 초기화
   };
@@ -57,43 +57,43 @@ const Modal = () => {
   };
 
   // 파일 업로드 버튼 클릭 시 호출되는 함수
-  const handleUpload = async () => {
-    if (file && category && userUid) { // 파일, 카테고리, 사용자 UID가 모두 있는지 확인
-      const app = initializeApp(firebaseConfig); // Firebase 앱 초기화
-      const storage = getStorage(app); // Firebase Storage 객체 가져오기
-      const userFolderRef = ref(storage, `users/${userUid}`); // 사용자 폴더 참조
-      const categoryFolderRef = ref(userFolderRef, category); // 카테고리 폴더 참조
-  
-      const fileRef = ref(categoryFolderRef, file.name); // 파일이 저장될 경로 참조
-  
+  // 파일 업로드 버튼 클릭 시 호출되는 함수
+const handleUpload = async () => {
+  if (file && category && userUid) { // 파일, 카테고리, 사용자 UID 확인
+    const app = initializeApp(firebaseConfig); // Firebase 앱 초기화
+    const storage = getStorage(app); // Firebase Storage 가져오기
+    const userFolderRef = ref(storage, `users/${userUid}`); // 사용자 폴더 참조
+    const categoryFolderRef = ref(userFolderRef, category); // 카테고리 폴더 참조
+
+    const fileRef = ref(categoryFolderRef, file.name); // 파일 경로 참조
+
+    try {
+      await uploadBytes(fileRef, file); // 파일을 카테고리 폴더에 업로드
+      const downloadURL = await getDownloadURL(fileRef); // 업로드된 파일의 다운로드 URL 가져오기
+
+      const db = app.firestore(); // Firestore 객체 가져오기
       try {
-        await uploadBytes(fileRef, file); // 파일을 카테고리 폴더에 업로드
-        const downloadURL = await getDownloadURL(fileRef); // 업로드된 파일의 다운로드 URL 가져오기
-  
-        // Firestore에 데이터 저장
-        const db = app.firestore(); // Firestore 객체 가져오기
-        try {
-          const docRef = await addDoc(collection(db, 'images'), { // 'images' 컬렉션에 데이터 추가
-            userId: userUid, // 사용자 UID
-            category: category, // 카테고리
-            imageURL: downloadURL, // 이미지 다운로드 URL
-          });
-          console.log('Document written with ID: ', docRef.id); // 추가된 문서 ID 출력
-        } catch (error) {
-          console.error('Error adding document: ', error); // 데이터 추가 중 에러 출력
-        }
-  
-        // 상태 초기화
+        const docRef = await addDoc(collection(db, 'images'), { // 'images' 컬렉션에 데이터 추가
+          userId: userUid, // 사용자 UID
+          category: category, // 카테고리
+          imageURL: downloadURL, // 이미지 다운로드 URL
+        });
+        console.log('Document written with ID: ', docRef.id); // 추가된 문서 ID 출력
+
+        // 파일 업로드 후 상태 초기화
         Setfile(null); // 파일 state 초기화
         setCategory(''); // 카테고리 state 초기화
       } catch (error) {
-        console.error('Error uploading file:', error); // 파일 업로드 중 에러 출력
-        alert('파일 업로드 중 오류가 발생했습니다.'); // 에러 알림
+        console.error('문서 추가 중 오류: ', error); // 데이터 추가 중 에러 출력
       }
-    } else {
-      alert('파일, 카테고리를 선택하거나 사용자 인증이 필요합니다.'); // 필수 정보 누락 알림
+    } catch (error) {
+      console.error('파일 업로드 중 오류:', error); // 파일 업로드 중 에러 출력
+      alert('파일 업로드 중 오류가 발생했습니다.'); // 에러 알림
     }
-  };
+  } else {
+    alert('파일, 카테고리를 선택하거나 사용자 인증이 필요합니다.'); // 필수 정보 누락 알림
+  }
+};
 
   // JSX 반환
   return (

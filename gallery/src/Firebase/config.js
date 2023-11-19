@@ -1,11 +1,12 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth'; // 추가된 부분
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAzNXgIXd5e_OqAacTD5xUr2k0APCiM6-A",
   authDomain: "gallery-using-react.firebaseapp.com",
+  databaseURL: "https://gallery-using-react-default-rtdb.firebaseio.com",
   projectId: "gallery-using-react",
   storageBucket: "gallery-using-react.appspot.com",
   messagingSenderId: "435514113224",
@@ -15,8 +16,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
-const auth = getAuth(app); // 인증 객체 추가
+const auth = getAuth(app);
 
-const provider = new GoogleAuthProvider(); // 구글 로그인 프로바이더 생성
+const provider = new GoogleAuthProvider();
 
-export { app, db, storage, auth, provider , firebaseConfig}; // auth와 googleProvider를 export
+export { app, db, storage, auth, provider, firebaseConfig };
+
+// 이하 기존 코드는 여기서부터 계속됩니다...

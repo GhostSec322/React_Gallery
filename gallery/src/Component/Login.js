@@ -1,33 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { auth, provider } from "../Firebase/config";
-import { signInWithPopup } from "firebase/auth";
-import Home from "./Home";
+import React from 'react';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import '../Firebase/config'
+import './Home'
 
-export default function Login() {
-  const [value, setValue] = useState("");
-
-  function handleClick() {
-    signInWithPopup(auth, provider).then((data) => {
-      setValue(data.user.email);
-      localStorage.setItem("email", data.user.email);
-      window.location.href = "/home"; // 로그인에 성공하면 '/home' 페이지로 이동
-    });
-  }
-
-  useEffect(() => {
-    setValue(localStorage.getItem("email"));
-  }, []);
+const Login = () => {
+  // 로그인 처리 함수
+  const signInWithFirebase = async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try {
+      await firebase.auth().signInWithPopup(provider);
+      // 로그인 성공 후 리다이렉션
+       history.push('/home'); // 리다이렉션 방법에 따라 변경 가능
+    } catch (error) {
+      console.error('로그인 실패:', error);
+    }
+  };
 
   return (
     <div>
-      {value ? (
-        <Home />
-      ) : (
-        <div>
-          {" "}
-          <button onClick={handleClick}>Sign in With Google</button>
-        </div>
-      )}
+      <h1>로그인 페이지</h1>
+      <button onClick={signInWithFirebase}>Google 로그인</button>
     </div>
   );
-}
+};
+
+export default Login;

@@ -4,10 +4,11 @@ import Modal from 'react-modal'
 import { useState, useEffect } from 'react';
 import module from '../api/Axios'
 
-const modalStyles = {overlay: {
+const modalStyles = {
+
+  overlay: {
    zIndex: 10,
-   width: "auto",
-   height: "auto",
+   
    }
  };
  
@@ -78,19 +79,22 @@ const modalStyles = {overlay: {
  }
  
  function ProfileIcon(){
-   const [modalIsOpen, setModalIsOpen] = useState(false);
-   return(
-     <>
-     <div className='profileIcon' onClick={()=> setModalIsOpen(true)}></div>
-     <Modal style={modalStyles} isOpen={modalIsOpen}  ariaHideApp={false} onRequestClose={() => setModalIsOpen(false)}>
-          Profile Info
-          <br></br>
-          <Logout/>
-     </Modal>
-     </>
-     
- 
-   );
+  const [visible, setVisible] = useState(false);
+  let content=null;
+
+  if(visible===true){
+   content=<div className="profileDetail"><Logout/></div>
+  }
+  return(
+    <>
+     <div className='profileIcon' onClick={()=>{ 
+       setVisible(!visible)
+       }}
+     >
+     </div>
+     {content}     
+    </>
+  );
  }
 
  function BannerImg(){
@@ -154,20 +158,27 @@ function Home()
 
   <div className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"} id='topMenuBar'>
     {content}
-    <ProfileIcon></ProfileIcon>
-    <button id="uploadIcon" onClick={()=> setModalIsOpen(true)}>Upload</button>
+    <div className="icons">
+      <ProfileIcon></ProfileIcon>
+      <>    
+        <button id="uploadIcon" onClick={()=> setModalIsOpen(true)}>Upload</button>
          <Modal style={modalStyles} isOpen={modalIsOpen}  ariaHideApp={false}  onRequestClose={() => setModalIsOpen(false)}>
-         <Upload onCreate={(_title,_body)=>{
-          const newImgInfo={id:nextId, title: _title, body: _body}
-          const newImgInfos=[...imgInfo];
-          newImgInfos.push(newImgInfo);
-          setImgInfo(newImgInfos);
-          setId(nextId);
-          setNextId(nextId+1);
-          setModalIsOpen(false);
-         }}> 
-        </Upload>
-      </Modal>      
+          <Upload onCreate={(_title,_body)=>{
+            const newImgInfo={id:nextId, title: _title, body: _body}
+            const newImgInfos=[...imgInfo];
+            newImgInfos.push(newImgInfo);
+            setImgInfo(newImgInfos);
+            setId(nextId);
+            setNextId(nextId+1);
+            setModalIsOpen(false);
+           }}> 
+          </Upload>
+      </Modal> 
+      </>
+       
+    </div>
+    
+    
   </div>
   
   {/* api연동 그림 영역 */}

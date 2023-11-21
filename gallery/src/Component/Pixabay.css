@@ -59,12 +59,12 @@
     border: none;
   }
   
-  .profileIcon{
+  .bprofileIcon{
     margin-right: 15px;
     width : 40px;
     height : 40px;
     border-radius: 50%;
-    background-color: tomato;
+    background-color: black
   }
   
   #topMenuBar{
@@ -149,6 +149,13 @@
 .icons{
   float: right;
   display: flex;
+}
+
+.loginTop{
+    width: 100%;
+    background-color: black;
+    height: auto;
+    top: 0;
 }
 
 

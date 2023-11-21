@@ -1,72 +1,160 @@
-import React, { useState, useEffect } from 'react';
-import Login from './Login';
+
+import './Pixabay.css'
+import Modal from 'react-modal'
+import { useState, useEffect } from 'react';
 import module from '../api/Axios'
-const Pixabay = () => {
-  const [query, setQuery] = useState('');
-  const [images, setImages] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(null);
+import Login from '../Component/Login'
+
+const modalStyles = {
+  content:{
+    
+  },
+
+  overlay: {
+   zIndex: 10,
+   position: 'absolute',
+    top: '45%',
+    left: '50%',
+    width: '600px',
+    height: '800px',
+    transform: 'translate(-50%, -50%)',
+    background: 'none',
+   }
+ };
  
+
+
+ function CreateImg(){
+  
+  const [images, setImages] = useState([]); 
+  
+  
   useEffect(() => {
+    
     const fetchRandomImages = async () => {
-      try {
         const response = await module.get();
         setImages(response.data.hits);
-      } catch (error) {
-        console.error(error);
-      }
+    
     };
     fetchRandomImages();
-  }, []);
+  },[]);
 
-  const handleSearch = async (query) => {
-    try {
-      const response = await module.get();
-      setImages(response.data.hits);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  
+  const img =images.map((e)=><div className='img' key={e.id} onClick={()=> 
+    {setModalIsOpen(true);}}>
+    <img src={e.webformatURL} alt='loading'></img>
+    </div>);
 
-  const handleImageClick = (image) => {
-    setSelectedImage(image);
-  };
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const handleDownload = () => {
-    if (selectedImage) {
-      const link = document.createElement('a');
-      link.href = selectedImage.largeImageURL;
-      link.download = 'image.jpg';
-      link.click();
-    }
-  };
+  return(
+    <>
+      <div className='imgArea'>   	
+        {img} 
+      </div>
+      <Modal style={modalStyles} isOpen={modalIsOpen}  ariaHideApp={false} onRequestClose={() => setModalIsOpen(false)}>
+      </Modal>
+    </>
+   ); 
+ }
+
+ 
+
+ function ProfileIcon(){
+  return(
+    <div className='bprofileIcon'></div>   
+  );
+ }
+
+ function BannerImg(){
+   const [images, setImages] = useState([]); 
+  const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
+  
+  useEffect(() => {
+    
+    const imgNumber=getRandom(0,10);
+
+    const fetchRandomImages = async () => {
+        const response = await module.get();
+        setImages(response.data.hits[imgNumber].webformatURL);
+    
+    };
+    fetchRandomImages();
+  },[]);
 
   return (
-    <div>
-      <div>
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <button onClick={() => handleSearch(query)}>Search</button>
-      </div>
-      <div>
-        {images.map((image) => (
-          <div key={image.id} onClick={() => handleImageClick(image)}>
-            <img src={image.webformatURL} alt={image.tags} />
-          </div>
-        ))}
-      </div>
-      {selectedImage && (
-        <div className="modal">
-          <img src={selectedImage.largeImageURL} alt={selectedImage.tags} />
-          <button onClick={handleDownload}>Download</button>
-        </div>
-      )}
-        <Login/>
-    </div>
-
+  
+        <img src={images} alt='loading' />
+     
+        
 );
-};
+ }
 
+function Pixabay()
+{
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const updateScroll = () => {
+        setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+    };
+
+  useEffect(() => {
+        window.addEventListener("scroll", updateScroll);
+    }, []);
+
+    let content=null;
+
+    if(scrollPosition>30){
+      content=<div className='top-search'>
+        <input type='text' placeholder='태그로 검색'></input>
+      </div>
+    }
+
+   return (
+
+
+<div className='setBackground'>
+
+<div className='apiArea'>
+
+  <div className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"} id='topMenuBar'>
+    {content}
+    <div className="icons">
+      <ProfileIcon></ProfileIcon>
+      <>    
+        <button id="uploadIcon" onClick={()=> setModalIsOpen(true)}>Upload</button>
+         <Modal style={modalStyles} isOpen={modalIsOpen}  ariaHideApp={false}  onRequestClose={() => setModalIsOpen(false)}>
+          <Modal>이미지를 업로드 하고 싶으시다면 로그인 해주세요</Modal>
+         <Login/>
+          
+      </Modal> 
+      </>
+       
+    </div>
+    
+    
+  </div>
+  
+  {/* api연동 그림 영역 */}
+   <div className="banner">
+         <BannerImg></BannerImg>
+   </div>
+  
+  <div className='search'>
+    <input type='text' placeholder='태그로 검색'></input>
+  </div>
+  
+  
+</div>
+
+<div className='noneApi'>
+  <CreateImg></CreateImg>
+</div>
+</div>
+
+  );
+}
 export default Pixabay;

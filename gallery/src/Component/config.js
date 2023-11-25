@@ -1,6 +1,10 @@
-// Import the functions you need from the SDKs you need
+
+///// 파이어 베이스 인증, storage  임포트 
 import { initializeApp } from "firebase/app";
-import{getAuth,GoogleAuthProvider}from "firebase/auth"
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getStorage } from "firebase/storage"; // Storage 모듈 가져오기
+import { getFirestore } from 'firebase/firestore'; // Firestore 모듈 가져오기
+
 const firebaseConfig = {
   apiKey: "AIzaSyAzNXgIXd5e_OqAacTD5xUr2k0APCiM6-A",
   authDomain: "gallery-using-react.firebaseapp.com",
@@ -11,8 +15,13 @@ const firebaseConfig = {
   appId: "1:435514113224:web:e76dceafeb1d001ed779fd"
 };
 
-// Initialize Firebase
+
+// Firebase 설정 초기화
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const provider=new GoogleAuthProvider();
-export {auth,provider};
+const provider = new GoogleAuthProvider();
+const db = getFirestore(app);
+// Storage 서비스에 대한 참조 가져오기
+const storage = getStorage(app);
+
+export { auth, provider, storage, db };  // auth, provider, storage 함께 내보내기

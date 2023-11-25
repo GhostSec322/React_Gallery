@@ -62,7 +62,6 @@ function Upload() {
             console.log('File available at', downloadURL);
           // 이미지가 성공적으로 업로드되면 다운로드 URL을 얻을 수 있습니다.
           // 여기에서 다운로드 URL을 이용하여 필요한 작업을 수행할 수 있습니다.
-          // 예를 들어, 다운로드 URL을 Firestore에 저장하는 등의 작업을 수행할 수 있습니다.
           console.log('File available at', downloadURL);
           setImageUrl(downloadURL); // 다운로드 URL을 상태로 설정
         });

@@ -1,72 +1,186 @@
-import React, { useState, useEffect } from 'react';
-import Login from './Login';
+import './Pixabay.css'
+import { useState, useEffect } from 'react';
 import module from '../api/Axios'
-const Pixabay = () => {
-  const [query, setQuery] = useState('');
-  const [images, setImages] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(null);
- 
+import Login from '../Component/Login'
+
+
+ function CreateImg(){
+  
+  const [images, setImages] = useState([]); 
+  
   useEffect(() => {
+    
     const fetchRandomImages = async () => {
-      try {
         const response = await module.get();
         setImages(response.data.hits);
-      } catch (error) {
-        console.error(error);
-      }
+    
     };
     fetchRandomImages();
-  }, []);
+  },[]);
 
-  const handleSearch = async (query) => {
-    try {
-      const response = await module.get();
-      setImages(response.data.hits);
-    } catch (error) {
-      console.error(error);
-    }
+  
+  const img =images.map((e)=><div className='img' key={e.id}>
+    <img src={e.webformatURL} alt='loading'></img>
+    </div>);
+
+  
+
+  return(
+    <>
+      <div className='imgArea'>   	
+        {img} 
+      </div>
+     
+    </>
+   ); 
+ }
+
+ 
+
+ function ProfileIcon(){
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+    document.body.style.overflow = 'hidden'; // 팝업이 나타날 때 body 스크롤을 막음
   };
 
-  const handleImageClick = (image) => {
-    setSelectedImage(image);
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    document.body.style.overflow = 'visible'; // 팝업이 닫힐 때 body 스크롤을 다시 허용
   };
+  
 
-  const handleDownload = () => {
-    if (selectedImage) {
-      const link = document.createElement('a');
-      link.href = selectedImage.largeImageURL;
-      link.download = 'image.jpg';
-      link.click();
-    }
-  };
+  return(
+    <>
+    <button className='bprofileIcon' onClick={openPopup}>Login</button>   
+    {isPopupOpen && (
+          <>
+            <div className="overlay" onClick={closePopup}></div>
+              <div className="login-popup">
+                <div className="login-popup-content">
+                  <div className='login-top'>이미지를 업로드 하려면 로그인하세요</div>
+                   <Login/>
+              </div>
+            </div>
+          </> 
+      )}
+    </>
+    
+  );
+ }
+
+ 
+ function BannerImg(){
+   const [images, setImages] = useState([]); 
+  const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
+  
+  useEffect(() => {
+    
+    const imgNumber=getRandom(0,10);
+
+    const fetchRandomImages = async () => {
+        const response = await module.get();
+        setImages(response.data.hits[imgNumber].webformatURL);
+    
+    };
+    fetchRandomImages();
+  },[]);
 
   return (
-    <div>
-      <div>
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <button onClick={() => handleSearch(query)}>Search</button>
-      </div>
-      <div>
-        {images.map((image) => (
-          <div key={image.id} onClick={() => handleImageClick(image)}>
-            <img src={image.webformatURL} alt={image.tags} />
-          </div>
-        ))}
-      </div>
-      {selectedImage && (
-        <div className="modal">
-          <img src={selectedImage.largeImageURL} alt={selectedImage.tags} />
-          <button onClick={handleDownload}>Download</button>
-        </div>
-      )}
-        <Login/>
-    </div>
-
+  
+        <img src={images} alt='loading' />
+     
+        
 );
-};
+ }
 
+function Pixabay()
+{
+  
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+    document.body.style.overflow = 'hidden'; // 팝업이 나타날 때 body 스크롤을 막음
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    document.body.style.overflow = 'visible'; // 팝업이 닫힐 때 body 스크롤을 다시 허용
+  };
+  
+
+  const updateScroll = () => {
+        setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+    };
+
+  useEffect(() => {
+        window.addEventListener("scroll", updateScroll);
+    }, []);
+
+    let content=null;
+
+    if(scrollPosition>30){
+      content=<div className='top-search'>
+        <input type='text' placeholder='태그로 검색'></input>
+      </div>
+    }
+
+   return (
+
+
+<div className='setBackground'>
+
+<div className='apiArea'>
+
+  <div className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"} id='topMenuBar'>
+    {content}
+    <div className="icons">
+      <ProfileIcon></ProfileIcon>
+      <>    
+        <button id="uploadIcon" onClick={openPopup}>Upload</button>
+        {isPopupOpen && (
+          <>
+            <div className="overlay" onClick={closePopup}></div>
+              <div className="login-popup">
+                <div className="login-popup-content">
+                  <div className='login-top'>이미지를 업로드 하려면 로그인하세요</div>
+                   <Login/>
+              </div>
+            </div>
+          </> 
+      )}
+         
+      </>
+       
+    </div>
+    
+  </div>
+  
+  {/* api연동 그림 영역 */}
+   <div className="banner">
+         <BannerImg></BannerImg>
+   </div>
+  
+  <div className='search'>
+    <input   
+      type="text"
+      placeholder='태그로 검색'/>
+      
+  </div>
+  
+  
+</div>
+
+<div className='noneApi'>
+  <CreateImg></CreateImg>
+</div>
+
+</div>
+
+  );
+}
 export default Pixabay;

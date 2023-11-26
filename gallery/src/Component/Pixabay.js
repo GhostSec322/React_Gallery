@@ -1,33 +1,13 @@
 
 import './Pixabay.css'
-import Modal from 'react-modal'
 import { useState, useEffect } from 'react';
 import module from '../api/Axios'
 import Login from '../Component/Login'
-
-const modalStyles = {
-  content:{
-    
-  },
-
-  overlay: {
-   zIndex: 10,
-   position: 'absolute',
-    top: '45%',
-    left: '50%',
-    width: '600px',
-    height: '800px',
-    transform: 'translate(-50%, -50%)',
-    background: 'none',
-   }
- };
- 
 
 
  function CreateImg(){
   
   const [images, setImages] = useState([]); 
-  
   
   useEffect(() => {
     
@@ -40,20 +20,18 @@ const modalStyles = {
   },[]);
 
   
-  const img =images.map((e)=><div className='img' key={e.id} onClick={()=> 
-    {setModalIsOpen(true);}}>
+  const img =images.map((e)=><div className='img' key={e.id}>
     <img src={e.webformatURL} alt='loading'></img>
     </div>);
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  
 
   return(
     <>
       <div className='imgArea'>   	
         {img} 
       </div>
-      <Modal style={modalStyles} isOpen={modalIsOpen}  ariaHideApp={false} onRequestClose={() => setModalIsOpen(false)}>
-      </Modal>
+     
     </>
    ); 
  }
@@ -61,11 +39,40 @@ const modalStyles = {
  
 
  function ProfileIcon(){
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+    document.body.style.overflow = 'hidden'; // 팝업이 나타날 때 body 스크롤을 막음
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    document.body.style.overflow = 'visible'; // 팝업이 닫힐 때 body 스크롤을 다시 허용
+  };
+  
+
   return(
-    <div className='bprofileIcon'></div>   
+    <>
+    <button className='bprofileIcon' onClick={openPopup}>Login</button>   
+    {isPopupOpen && (
+          <>
+            <div className="overlay" onClick={closePopup}></div>
+              <div className="login-popup">
+                <div className="login-popup-content">
+                  <div className='login-top'>이미지를 업로드 하려면 로그인하세요</div>
+                   <Login/>
+              </div>
+            </div>
+          </> 
+      )}
+    </>
+    
   );
  }
 
+ 
  function BannerImg(){
    const [images, setImages] = useState([]); 
   const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
@@ -92,10 +99,20 @@ const modalStyles = {
 
 function Pixabay()
 {
-
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+    document.body.style.overflow = 'hidden'; // 팝업이 나타날 때 body 스크롤을 막음
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    document.body.style.overflow = 'visible'; // 팝업이 닫힐 때 body 스크롤을 다시 허용
+  };
+  
 
   const updateScroll = () => {
         setScrollPosition(window.scrollY || document.documentElement.scrollTop);
@@ -125,16 +142,22 @@ function Pixabay()
     <div className="icons">
       <ProfileIcon></ProfileIcon>
       <>    
-        <button id="uploadIcon" onClick={()=> setModalIsOpen(true)}>Upload</button>
-         <Modal style={modalStyles} isOpen={modalIsOpen}  ariaHideApp={false}  onRequestClose={() => setModalIsOpen(false)}>
-          <Modal>이미지를 업로드 하고 싶으시다면 로그인 해주세요</Modal>
-         <Login/>
-          
-      </Modal> 
+        <button id="uploadIcon" onClick={openPopup}>Upload</button>
+        {isPopupOpen && (
+          <>
+            <div className="overlay" onClick={closePopup}></div>
+              <div className="login-popup">
+                <div className="login-popup-content">
+                  <div className='login-top'>이미지를 업로드 하려면 로그인하세요</div>
+                   <Login/>
+              </div>
+            </div>
+          </> 
+      )}
+         
       </>
        
     </div>
-    
     
   </div>
   
@@ -144,7 +167,10 @@ function Pixabay()
    </div>
   
   <div className='search'>
-    <input type='text' placeholder='태그로 검색'></input>
+    <input   
+      type="text"
+      placeholder='태그로 검색'/>
+      
   </div>
   
   
@@ -153,6 +179,7 @@ function Pixabay()
 <div className='noneApi'>
   <CreateImg></CreateImg>
 </div>
+
 </div>
 
   );

@@ -1,29 +1,39 @@
 import React, { useState, useEffect } from 'react';
+import { fetchRandomImages, searchImages } from '../api/Axios';
+import ImageList from './ImageList';
 import Login from './Login';
-import module from '../api/Axios'
+
 const Pixabay = () => {
   const [query, setQuery] = useState('');
   const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
- 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    const fetchRandomImages = async () => {
+    const fetchImages = async () => {
       try {
-        const response = await module.get();
-        setImages(response.data.hits);
+        setLoading(true);
+        const result = await fetchRandomImages();
+        setImages(result);
       } catch (error) {
-        console.error(error);
+        // Handle errors
+      } finally {
+        setLoading(false);
       }
     };
-    fetchRandomImages();
+
+    fetchImages();
   }, []);
 
   const handleSearch = async (query) => {
     try {
-      const response = await module.get();
-      setImages(response.data.hits);
+      setLoading(true);
+      const result = await searchImages(query);
+      setImages(result);
     } catch (error) {
-      console.error(error);
+      // Handle errors
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -50,12 +60,9 @@ const Pixabay = () => {
         />
         <button onClick={() => handleSearch(query)}>Search</button>
       </div>
+      {loading && <p>Loading...</p>}
       <div>
-        {images.map((image) => (
-          <div key={image.id} onClick={() => handleImageClick(image)}>
-            <img src={image.webformatURL} alt={image.tags} />
-          </div>
-        ))}
+        <ImageList images={images} onImageClick={handleImageClick} />
       </div>
       {selectedImage && (
         <div className="modal">
@@ -63,10 +70,9 @@ const Pixabay = () => {
           <button onClick={handleDownload}>Download</button>
         </div>
       )}
-        <Login/>
+      <Login />
     </div>
-
-);
+  );
 };
 
 export default Pixabay;

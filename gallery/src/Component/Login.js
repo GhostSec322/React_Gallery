@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { auth, provider } from "./config";
 import { signInWithPopup } from "firebase/auth";
 import Home from "./Home";
-import './Login.css'
 
 export default function Login() {
   const [value, setValue] = useState("");
@@ -26,7 +25,7 @@ export default function Login() {
       ) : (
         <div>
           {" "}
-          <button className="login" onClick={handleClick}>Sign in With Google</button>
+          <button onClick={handleClick}>Sign in With Google</button>
         </div>
       )}
     </div>

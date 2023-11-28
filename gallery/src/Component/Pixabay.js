@@ -1,3 +1,4 @@
+
 import './Pixabay.css'
 import { useState, useEffect } from 'react';
 import module from '../api/Axios'
@@ -19,9 +20,22 @@ import { FaDownload } from "react-icons/fa6";
     setPopupOpen(false);
   };
 
+import React, { useState, useEffect } from 'react';
+import { fetchRandomImages, searchImages } from '../api/Axios';
+import ImageList from './ImageList';
+import Login from './Login';
+
+const Pixabay = () => {
+  const [query, setQuery] = useState('');
+  const [images, setImages] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+
   useEffect(() => {
-    const fetchRandomImages = async () => {
+    const fetchImages = async () => {
       try {
+
         const response = await module.get('', {
           params: {
             q: props.query,
@@ -34,6 +48,32 @@ import { FaDownload } from "react-icons/fa6";
     };
     fetchRandomImages();
   }, [props.query]);
+
+        setLoading(true);
+        const result = await fetchRandomImages();
+        setImages(result);
+      } catch (error) {
+        // Handle errors
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchImages();
+  }, []);
+
+  const handleSearch = async (query) => {
+    try {
+      setLoading(true);
+      const result = await searchImages(query);
+      setImages(result);
+    } catch (error) {
+      // Handle errors
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   const downloadImage = () => {
     if (selectedImage) {
@@ -143,6 +183,7 @@ function Pixabay()
             placeholder='태그로 검색'
             onChange={handleInputChange}/>
       </div>
+
     }
 
 
@@ -173,14 +214,28 @@ function Pixabay()
           />
         </div>
   
+
+      {loading && <p>Loading...</p>}
+      <div>
+        <ImageList images={images} onImageClick={handleImageClick} />
+
       </div>
 
         <div className='noneApi'>
           <CreateImg query={query}></CreateImg>
         </div>
 
+
 </div>
 
   );
 }
+
+      )}
+      <Login />
+    </div>
+  );
+};
+
+
 export default Pixabay;

@@ -3,7 +3,7 @@ import { collection, getDocs, doc, getDoc, updateDoc, setDoc } from 'firebase/fi
 import { getStorage, ref } from 'firebase/storage';
 import { auth, db } from './config';
 import { useDispatch } from 'react-redux';
-import { updateKeyValue } from './store'; // store 위치에 따라 경로를 수정해주세요.
+import { updateKeyValue } from './store';
 import { useSelector } from 'react-redux';
 
 

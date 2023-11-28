@@ -1,0 +1,17 @@
+.login{
+    border: none;
+    margin-right: 20px;
+    width : 120px;
+    height : 40px;
+    border-radius: 40px;
+     background-color: rgba(177, 177, 177, 0.582);
+    color: black;
+    font-weight: bold;
+    font-size: 14px;
+} 
+
+.login:hover{
+  color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+}

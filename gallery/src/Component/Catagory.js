@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { collection, getDocs, doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
-import { getStorage, ref } from 'firebase/storage';
+import { getStorage, ref, listAll, getDownloadURL  } from 'firebase/storage';
 import { auth, db } from './config';
 import { useDispatch } from 'react-redux';
 import { updateKeyValue } from './store';
@@ -59,10 +59,31 @@ function Category() {
   }, [currentUser, dispatch]);
 
   const handleButtonClick = async (key) => {
-    const value = userValues[key];
-    alert(`클릭된 값: ${value}`);
+    try {
+      const uid = currentUser.uid;
+      const storage = getStorage();
+      const storageRef = ref(storage, `users/${uid}/${key}`);
+      const fileRefs = await listAll(storageRef);
+      const imageContainer = document.getElementById('image-container');
+      imageContainer.innerHTML = ''; // 이미지 컨테이너 비우기
+      fileRefs.items.forEach(async (fileRef) => {
+        const downloadURL = await getDownloadURL(fileRef);
+  
+        const img = new Image();
+        img.src = downloadURL;
+        img.alt = 'Resized Image';
+        img.style.width = '500px'; // 원하는 가로 크기 설정
+        img.style.height = 'auto'; // 세로 비율 자동 조정
+  
+        document.getElementById('image-container').appendChild(img);
+      });
+    } catch (error) {
+      console.error('파일 목록을 불러오는 중 오류 발생:', error);
+    }
   };
-
+  
+  
+  
   const handleCreateClick = async () => {
     try {
       const uid = currentUser.uid;
@@ -114,7 +135,10 @@ function Category() {
         onChange={(e) => setInputValue(e.target.value)}
       />
       <button onClick={handleCreateClick}>생성</button>
+      {/* 이미지를 담을 컨테이너 */}
       {renderButtons()}
+    <div id="image-container"></div>
+  
     </div>
   );
 }

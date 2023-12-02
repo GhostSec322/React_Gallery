@@ -1,11 +1,13 @@
-import './Pixabay.css'
-import { useState, useEffect } from 'react';
-import module from '../api/Axios'
-import Login from '../Component/Login'
+import "./Pixabay.css";
+import { useState, useEffect } from "react";
+import module from "../api/Axios";
+import { auth } from "./config";
+import Login from "../Component/Login";
+import Logout from "./Logout";
 import { FaDownload } from "react-icons/fa6";
-  
- function CreateImg(props){
-  
+import { Link } from "react-router-dom";
+
+function CreateImg(props) {
   const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isPopupOpen, setPopupOpen] = useState(false);
@@ -22,14 +24,14 @@ import { FaDownload } from "react-icons/fa6";
   useEffect(() => {
     const fetchRandomImages = async () => {
       try {
-        const response = await module.get('', {
+        const response = await module.get("", {
           params: {
             q: props.query,
           },
         });
         setImages(response.data.hits);
       } catch (error) {
-        console.error('이미지를 불러오는데 실패했습니다');
+        console.error("이미지를 불러오는데 실패했습니다");
       }
     };
     fetchRandomImages();
@@ -43,9 +45,9 @@ import { FaDownload } from "react-icons/fa6";
         .then((blob) => {
           // Blob을 다운로드할 수 있는 링크 생성
           const url = window.URL.createObjectURL(new Blob([blob]));
-          const link = document.createElement('a');
+          const link = document.createElement("a");
           link.href = url;
-          link.setAttribute('download', 'image.jpg'); // 다운로드될 파일의 이름
+          link.setAttribute("download", "image.jpg"); // 다운로드될 파일의 이름
           document.body.appendChild(link);
           link.click();
 
@@ -53,13 +55,19 @@ import { FaDownload } from "react-icons/fa6";
           link.parentNode.removeChild(link);
           window.URL.revokeObjectURL(url);
         })
-        .catch((error) => console.error('이미지 다운로드에 실패했습니다', error));
+        .catch((error) =>
+          console.error("이미지 다운로드에 실패했습니다", error)
+        );
     }
   };
 
   const img = images.map((image) => (
-    <div className='img' key={image.id}>
-      <img src={image.largeImageURL} alt='loading' onClick={() => openPopup(image)} />
+    <div className="img" key={image.id}>
+      <img
+        src={image.largeImageURL}
+        alt="loading"
+        onClick={() => openPopup(image)}
+      />
     </div>
   ));
 
@@ -71,11 +79,13 @@ import { FaDownload } from "react-icons/fa6";
       {/* 이미지 팝업 */}
       <div className="popup">
         {selectedImage && (
-          <> 
-            <div className='popupImg'>
-              <img src={selectedImage.largeImageURL} alt='popup' />
+          <>
+            <div className="popupImg">
+              <img src={selectedImage.largeImageURL} alt="popup" />
             </div>
-            <button className='download-button' onClick={downloadImage}>DownLoad <FaDownload></FaDownload></button>
+            <button className="download-button" onClick={downloadImage}>
+              DownLoad <FaDownload></FaDownload>
+            </button>
           </>
         )}
       </div>
@@ -84,103 +94,110 @@ import { FaDownload } from "react-icons/fa6";
 
   return (
     <>
-      <div className='imgArea'>
-        {img}
-      </div>
+      <div className="imgArea">{img}</div>
       {popup}
     </>
   );
-};
- 
+}
 
- 
- function BannerImg(){
-  const [images, setImages] = useState([]); 
+function BannerImg() {
+  const [images, setImages] = useState([]);
   const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
-  
+
   useEffect(() => {
-    const imgNumber=getRandom(0,10);
+    const imgNumber = getRandom(0, 10);
     const fetchRandomImages = async () => {
-        const response = await module.get();
-        setImages(response.data.hits[imgNumber].webformatURL);
+      const response = await module.get();
+      setImages(response.data.hits[imgNumber].webformatURL);
     };
     fetchRandomImages();
-  },[]);
+  }, []);
 
-  return (
-    <img src={images} alt='loading' />
-    );
- }
+  return <img src={images} alt="loading" />;
+}
 
-function Pixabay()
-{
-  
+function Pixabay() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [query, setQuery]=useState('');
+  const [query, setQuery] = useState("");
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setIsLoggedIn(!!user); // user가 있는 경우 true, 없는 경우 false로 상태 설정
+    });
 
-  useEffect(() => {setQuery('');}, []);//무한 랜더링 방지
+    return () => unsubscribe();
+  }, []);
+  useEffect(() => {
+    setQuery("");
+  }, []); //무한 랜더링 방지
 
   const handleInputChange = (e) => {
     setQuery(e.target.value); // input 값이 변경될 때마다 query 값을 업데이트
   };
 
-
   //스크롤 이벤트 제어
   const updateScroll = () => {
-        setScrollPosition(window.scrollY || document.documentElement.scrollTop);
-    };
+    setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+  };
 
   useEffect(() => {
-        window.addEventListener("scroll", updateScroll);
-    }, []);
+    window.addEventListener("scroll", updateScroll);
+  }, []);
 
-    let content=null;
+  let content = null;
 
-    if(scrollPosition>30){
-      content=<div className='top-search'>
-        <input type='text'
-            value={query}
-            placeholder='태그로 검색'
-            onChange={handleInputChange}/>
+  if (scrollPosition > 30) {
+    content = (
+      <div className="top-search">
+        <input
+          type="text"
+          value={query}
+          placeholder="태그로 검색"
+          onChange={handleInputChange}
+        />
       </div>
-    }
+    );
+  }
 
-
-
-   return (
-    <div className='setBackground'>
-    
-      <div className='apiArea'>
-
-        <div className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"} id='topMenuBar'>
+  return (
+    <div className="setBackground">
+      <div className="apiArea">
+        <div
+          className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"}
+          id="topMenuBar"
+        >
           {content}
           <div className="icons">
-            <Login/>
+            {isLoggedIn ? (
+              <div className="icons">
+                <Link to="/Home">Go to Gallery</Link>
+                <Logout />
+              </div>
+            ) : (
+              <Login />
+            )}
           </div>
         </div>
-  
-      {/* api연동 그림 영역 */}
+
+        {/* api연동 그림 영역 */}
         <div className="banner">
           <BannerImg></BannerImg>
         </div>
-  
-        <div className='search'>
+
+        <div className="search">
           <input
-            type='text'
+            type="text"
             value={query}
-            placeholder='태그로 검색'
+            placeholder="태그로 검색"
             onChange={handleInputChange} // input 값이 변경될 때마다 query 값을 업데이트
           />
         </div>
-  
       </div>
 
-        <div className='noneApi'>
-          <CreateImg query={query}></CreateImg>
-        </div>
-
-</div>
-
+      <div className="noneApi">
+        <CreateImg query={query}></CreateImg>
+      </div>
+    </div>
   );
 }
 export default Pixabay;

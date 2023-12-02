@@ -30,11 +30,7 @@ export default function Login() {
   return (
     <div>
       {email ? (
-        <div>
-          <Link to="/home">Home</Link>
-          {/* 사용자 프로필 정보 */}
-          <p>Welcome, {email}</p>
-        </div>
+        <div></div>
       ) : (
         <div>
           <button className="login" onClick={handleLogin}>

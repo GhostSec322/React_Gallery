@@ -1,32 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { auth, provider } from "./config";
 import { signInWithPopup } from "firebase/auth";
+import { Link } from "react-router-dom";
 import Home from "./Home";
-import "./Login.css"
+import "./Login.css";
 
 export default function Login() {
-  const [value, setValue] = useState("");
-
-  function handleClick() {
-    signInWithPopup(auth, provider).then((data) => {
-      setValue(data.user.email);
-      localStorage.setItem("email", data.user.email);
-      window.location.href = "/home"; // 로그인에 성공하면 '/home' 페이지로 이동
-    });
-  }
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
-    setValue(localStorage.getItem("email"));
+    const userEmail = localStorage.getItem("email");
+    if (userEmail) {
+      setEmail(userEmail);
+    }
   }, []);
+
+  const handleLogin = () => {
+    signInWithPopup(auth, provider)
+      .then((data) => {
+        const userEmail = data.user.email;
+        setEmail(userEmail);
+        localStorage.setItem("email", userEmail);
+      })
+      .catch((error) => {
+        console.error("Login failed: ", error);
+      });
+  };
 
   return (
     <div>
-      {value ? (
-        <Home />
+      {email ? (
+        <div></div>
       ) : (
         <div>
-          {" "}
-          <button className="login" onClick={handleClick}>Sign in With Google</button>
+          <button className="login" onClick={handleLogin}>
+            Sign in With Google
+          </button>
         </div>
       )}
     </div>

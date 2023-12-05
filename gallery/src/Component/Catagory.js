@@ -18,6 +18,7 @@ import { auth, db } from "./config";
 import { useDispatch } from "react-redux";
 import { updateKeyValue } from "./store";
 import { useSelector } from "react-redux";
+import "./Catagory.css"
 
 function Category() {
   const [buttonRenderKey, setButtonRenderKey] = useState(0);
@@ -146,8 +147,9 @@ function Category() {
           const img = new Image();
           img.src = downloadURL;
           img.alt = "Resized Image";
-          img.style.width = "500px";
-          img.style.height = "auto";
+          img.style.width = "100%";
+          img.style.height = "100%";
+          
 
           const fileName = fileRef.name; // 파일명 가져오기
 
@@ -156,8 +158,8 @@ function Category() {
           const imgName = document.createElement("p");
           imgName.textContent = `File Name: ${fileName}`; // 파일명 출력
 
-          imgDiv.appendChild(imgName);
           imgDiv.appendChild(img);
+          imgDiv.appendChild(imgName);
           imgDiv.addEventListener("click", () =>
             handleImageClick(fileName, key)
           ); // 클릭 이벤트 수정
@@ -226,6 +228,7 @@ function Category() {
       <button onClick={handleCreateClick}>생성</button>
       {/* 이미지를 담을 컨테이너 */}
       {renderButtons()}
+      <div><p>{selectedCatagory}</p></div>
       <div id="image-container"></div>
       {isModalOpen && (
         <div style={modalStyle}>

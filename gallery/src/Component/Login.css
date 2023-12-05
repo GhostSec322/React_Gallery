@@ -4,7 +4,7 @@
   width : 120px;
   height : 40px;
   border-radius: 40px;
-   background-color: rgba(97, 96, 96, 0.582);
+   background-color: rgba(173, 173, 173, 0.8);
   color: black;
   font-weight: bold;
   font-size: 14px;
@@ -12,6 +12,6 @@
 
 .login:hover{
 color: white;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.8);
   font-size: 14px;
 }

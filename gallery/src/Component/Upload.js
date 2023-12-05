@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { useSelector } from 'react-redux';
+import './Upload.css'
 
 function Upload() {
     const [imageUrl, setImageUrl] = useState('');
@@ -9,7 +10,7 @@ function Upload() {
   const [selectedKey, setSelectedKey] = useState('');
   const storage = getStorage(); // Firebase Storage 인스턴스
   const keyValueDict = useSelector((state) => state.keyValueDict);
-
+  
   const generateFilename = (originalFilename) => {
     const date = new Date();
     const dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
@@ -69,23 +70,39 @@ function Upload() {
     );
   };
 
+
+
   return (
-    <div>
+    <div className='setUpload'>
 
+      <div className='load'>
+        <div className='preview'>
+          {imageUrl && <img src={imageUrl} alt="Uploaded"></img>}
+        </div>
+        <progress className="progress" value={uploadProgress} max="100" /> {/* 프로그래스 바 */}
+      </div>
+      
+      <div className='detail'>
+        <select className="category" value={selectedKey} onChange={handleKeyChange}>
+          <option value="">카테고리 선택</option>
+          {Object.keys(keyValueDict).map((key) => (
+            <option key={key} value={key}>
+              {key}
+            </option>
+          ))}
+        </select>
+        <div className='filebox'>
+          <label for="select-file">이미지 선택</label>
+          <input id="select-file" type="file" onChange={handleChange} />
+        </div>
+        
+        <button className='upload-button' onClick={handleUpload}>Upload</button>
+      </div>
+        
 
-    <progress value={uploadProgress} max="100" /> {/* 프로그래스 바 */}
- 
-      <select value={selectedKey} onChange={handleKeyChange}>
-        <option value="">카테고리 선택</option>
-        {Object.keys(keyValueDict).map((key) => (
-          <option key={key} value={key}>
-            {key}
-          </option>
-        ))}
-      </select>
-      <input type="file" onChange={handleChange} />
-      <button onClick={handleUpload}>Upload</button>
-      {imageUrl && <img src={imageUrl} alt="Uploaded" />}
+      
+      
+      
     </div>
   );
 }

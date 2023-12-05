@@ -1,0 +1,21 @@
+#image-container{
+    /* border: 1px solid black; */
+}
+
+#image-container div{
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+  margin: 10px;
+  border: 1px solid black;
+}
+
+
+
+#image-container div p{
+  margin: 0px 0px 0px 0px; line-height: 120%;
+  overflow: hidden;  		
+  text-overflow: ellipsis;  	
+  white-space: nowrap; 		
+  word-break:break-all;
+}

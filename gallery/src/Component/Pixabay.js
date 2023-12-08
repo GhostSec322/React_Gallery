@@ -181,7 +181,7 @@ function Pixabay() {
           <div className="icons">
             {isLoggedIn ? (
               <div className="icons">
-                <Link to="/Home">Go to Gallery</Link>
+                <Link className="link" to="/Home">Go to Gallery</Link>
                 <Logout />
               </div>
             ) : (

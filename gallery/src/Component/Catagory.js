@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./Catagory.css"
 import {
   collection,
   getDocs,
@@ -29,6 +30,7 @@ function Category() {
   const [selectedCatagory, setSelectCatagory] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(""); // 새로운 상태 추가
 
   const dispatch = useDispatch();
   const modalStyle = {
@@ -46,7 +48,17 @@ function Category() {
     top: "10px",
     right: "10px",
     cursor: "pointer",
+    width: "40px",
+    height: "40px",
+    textAlign: "center",
+    lineHeight: "30px",
+    fontSize: "40px",
+    position: "absolute",
+    top: "10px",
+    right: "10px",
+    cursor: "pointer",
   };
+
   useEffect(() => {
     // 사용자 인증 로직
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -59,6 +71,7 @@ function Category() {
 
     return () => unsubscribe();
   }, []);
+
   const handleImageDelete = async (fileName) => {
     try {
       const uid = currentUser.uid;
@@ -91,9 +104,11 @@ function Category() {
       console.error("Error loading image: ", error);
     }
   };
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
   useEffect(() => {
     console.log("Selected File Name:", selectedFileName);
   }, [selectedFileName]);
@@ -101,6 +116,7 @@ function Category() {
   useEffect(() => {
     console.log("Selected Catagory Name:", selectedCatagory);
   }, [selectedCatagory]);
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -133,6 +149,7 @@ function Category() {
 
   const handleButtonClick = async (key) => {
     try {
+      setSelectedButton(key);//선택한 버튼값
       setSelectCatagory(key);
       const uid = currentUser.uid;
       const storage = getStorage();
@@ -141,14 +158,22 @@ function Category() {
       const imageContainer = document.getElementById("image-container");
       imageContainer.innerHTML = "";
 
+      //파일이 없는 경우
+      if (fileRefs.items.length === 0) {
+        const noImagesMessage = document.createElement("p");
+        noImagesMessage.textContent = "파일이 존재하지 않습니다.";
+        noImagesMessage.classList.add("noImagesMessage");
+        imageContainer.appendChild(noImagesMessage);
+      } else{
+
       fileRefs.items.forEach(async (fileRef) => {
         try {
           const downloadURL = await getDownloadURL(fileRef);
           const img = new Image();
           img.src = downloadURL;
           img.alt = "Resized Image";
-          img.style.width = "500px";
-          img.style.height = "auto";
+          img.style.width = "100%";
+          img.style.height = "100%";
 
           const fileName = fileRef.name; // 파일명 가져오기
 
@@ -157,8 +182,8 @@ function Category() {
           const imgName = document.createElement("p");
           imgName.textContent = `File Name: ${fileName}`; // 파일명 출력
 
-          imgDiv.appendChild(imgName);
           imgDiv.appendChild(img);
+          imgDiv.appendChild(imgName);
           imgDiv.addEventListener("click", () =>
             handleImageClick(fileName, key)
           ); // 클릭 이벤트 수정
@@ -167,10 +192,12 @@ function Category() {
           console.error("이미지를 불러오는 중 오류 발생:", error);
         }
       });
+    }
     } catch (error) {
       console.error("파일 목록을 불러오는 중 오류 발생:", error);
     }
   };
+  
   const handleCreateClick = async () => {
     try {
       const uid = currentUser.uid;
@@ -205,11 +232,15 @@ function Category() {
 
   const renderButtons = () => {
     return (
-      <div key={buttonRenderKey}>
+      <div className="selectCatagory"  key={buttonRenderKey}>
         {" "}
         {/* 키를 변경하여 새로 렌더링 */}
         {userKeys.map((key) => (
-          <button key={key} onClick={() => handleButtonClick(key)}>
+          <button
+            className={`catagoryButton ${selectedButton === key ? 'selected' : ''}`}
+            key={key} 
+            onClick={() => handleButtonClick(key)}
+          >
             {key}
           </button>
         ))}
@@ -217,14 +248,28 @@ function Category() {
     );
   };
 
+  //새 카테고리용 모달 창
+  const [isNewCategoryModalOpen, setIsNewCategoryModalOpen] = useState(false);
+
+  const openNewCategoryModal = () => {
+    setIsNewCategoryModalOpen(true);
+  };
+
+  const closeNewCategoryModal = () => {
+    setIsNewCategoryModalOpen(false);
+  };
+
+  useEffect(() => {
+    // 모달이 열릴 때 필요한 작업 수행
+  }, [isNewCategoryModalOpen]);
+
+
   return (
     <div>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-      />
-      <button onClick={handleCreateClick}>생성</button>
+      <button className="newCatagory" onClick={openNewCategoryModal}>
+        카테고리 추가
+      </button> 
+      
       {/* 이미지를 담을 컨테이너 */}
       {renderButtons()}
       <div id="image-container"></div>
@@ -249,6 +294,25 @@ function Category() {
           />
         </div>
       )}
+
+    {/* 새 카테고리 모달 */}
+      {isNewCategoryModalOpen && (
+        <div className="modal-background" onClick={closeNewCategoryModal}>
+          <div style={modalStyle}>
+            <span style={closeButtonStyle} onClick={closeNewCategoryModal}>
+              &times;
+            </span>
+            <h2>새 카테고리 생성</h2>
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+            <button onClick={handleCreateClick}>생성</button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

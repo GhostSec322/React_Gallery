@@ -1,0 +1,81 @@
+.setUpload{
+    width: auto;
+    display: flex;
+    justify-content: center;
+ 
+}
+
+.textSize{
+ font-size: 30px;
+}
+
+.progress{
+    width: 98%;
+}
+
+.category{
+    margin-top: 10px;
+    border: 1px solid black;
+    text-align: center;
+    margin-bottom: 10px;
+    width: 80%;
+    height: 60px;
+    
+}
+
+.preview{
+    border: 1px solid black;
+    width: 400px;
+    height: 400px;
+    margin-right: 10px;
+}
+
+.preview img{
+    width: 100%;
+    height: 100%;
+}
+.detail{
+    border: 1px solid red;
+    width: 300px;
+    height: 410px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.load{
+    margin-right: 20px;
+    /* border: 1px solid blue; */
+}
+
+.upload-button{
+    width: 50%;
+    height: 40px;
+}
+
+.filebox label {
+    display: inline-block;
+    padding: .5em .75em;
+    color: #000000;
+    font-size: inherit;
+    line-height: normal;
+    vertical-align: middle;
+    background-color: #fdfdfd;
+    cursor: pointer;
+    border: 1px solid #252525;
+
+    border-radius: .25em;
+    margin-bottom: 20px;
+  }
+  
+  .filebox input[type="file"] {  /* 파일 필드 숨기기 */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip:rect(0,0,0,0);
+    border: 0;
+  }
+

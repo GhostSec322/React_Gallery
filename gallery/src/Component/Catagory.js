@@ -48,6 +48,7 @@ function Category() {
     cursor: "pointer",
   };
   useEffect(() => {
+    // 사용자 인증 로직
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setCurrentUser(user);

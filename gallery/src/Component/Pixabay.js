@@ -9,19 +9,22 @@ import { Link } from "react-router-dom";
 
 function CreateImg(props) {
   const [images, setImages] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null); // 선택된 이미지
+  const [isPopupOpen, setPopupOpen] = useState(false); // 팝업 상태
 
   const openPopup = (image) => {
+    // 팝업이 열렸을때 처리하는 로직
     setSelectedImage(image);
     setPopupOpen(true);
   };
 
   const closePopup = () => {
+    // 팝업이 닫혔을때 처리하는 로직
     setPopupOpen(false);
   };
 
   useEffect(() => {
+    //Pixabayapi에서 이미지를 불러오는 로직
     const fetchRandomImages = async () => {
       try {
         const response = await module.get("", {
@@ -38,6 +41,7 @@ function CreateImg(props) {
   }, [props.query]);
 
   const downloadImage = () => {
+    // 이미지 다운로드 로직
     if (selectedImage) {
       // 이미지 URL을 Blob으로 변환
       fetch(selectedImage.largeImageURL)
@@ -61,19 +65,22 @@ function CreateImg(props) {
     }
   };
 
-  const img = images.map((image) => (
-    <div className="img" key={image.id}>
-      <img
-        src={image.largeImageURL}
-        alt="loading"
-        onClick={() => openPopup(image)}
-      />
-    </div>
-  ));
+  const img = images.map(
+    (
+      image // 이미지를 화면 출력 로직
+    ) => (
+      <div className="img" key={image.id}>
+        <img
+          src={image.largeImageURL}
+          alt="loading"
+          onClick={() => openPopup(image)}
+        />
+      </div>
+    )
+  );
 
   const popup = isPopupOpen && (
     <div>
-      {/* 어두운 배경 */}
       <div className="overlay" onClick={closePopup}></div>
 
       {/* 이미지 팝업 */}
@@ -127,10 +134,14 @@ function Pixabay() {
 
     return () => unsubscribe();
   }, []);
+  ///////
+  /**useEffect(() => {
+    setQuery("");
+  }, [query]); <=무한 랜더링 현상에 빠질 수 있음 */
   useEffect(() => {
     setQuery("");
-  }, []); //무한 랜더링 방지
-
+  }, []);
+  ////////
   const handleInputChange = (e) => {
     setQuery(e.target.value); // input 값이 변경될 때마다 query 값을 업데이트
   };

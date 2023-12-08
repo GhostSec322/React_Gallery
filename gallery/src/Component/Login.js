@@ -4,6 +4,7 @@ import { signInWithPopup } from "firebase/auth";
 import { Link } from "react-router-dom";
 import Home from "./Home";
 import "./Login.css";
+import Logout from "./Logout";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -30,7 +31,9 @@ export default function Login() {
   return (
     <div>
       {email ? (
-        <div></div>
+        <div>
+          <Logout />
+        </div>
       ) : (
         <div>
           <button className="login" onClick={handleLogin}>

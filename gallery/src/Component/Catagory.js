@@ -30,7 +30,8 @@ function Category() {
   const [selectedCatagory, setSelectCatagory] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [selectedButton, setSelectedButton] = useState(""); // 새로운 상태 추가
+  
   const dispatch = useDispatch();
   const modalStyle = {
     position: "fixed",
@@ -47,7 +48,14 @@ function Category() {
     top: "10px",
     right: "10px",
     cursor: "pointer",
+    width: "40px",
+    height: "40px",
+    textAlign: "center",
+    lineHeight: "30px",
+    fontSize: "40px",
+    //border: "1px solid black"
   };
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -59,6 +67,7 @@ function Category() {
 
     return () => unsubscribe();
   }, []);
+
   const handleImageDelete = async (fileName) => {
     try {
       const uid = currentUser.uid;
@@ -91,9 +100,11 @@ function Category() {
       console.error("Error loading image: ", error);
     }
   };
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
   useEffect(() => {
     console.log("Selected File Name:", selectedFileName);
   }, [selectedFileName]);
@@ -133,6 +144,7 @@ function Category() {
 
   const handleButtonClick = async (key) => {
     try {
+      setSelectedButton(key);//선택한 버튼값
       setSelectCatagory(key);
       const uid = currentUser.uid;
       const storage = getStorage();
@@ -140,6 +152,13 @@ function Category() {
       const fileRefs = await listAll(storageRef);
       const imageContainer = document.getElementById("image-container");
       imageContainer.innerHTML = "";
+
+      if (fileRefs.items.length === 0) {
+        const noImagesMessage = document.createElement("p");
+        noImagesMessage.textContent = "파일이 존재하지 않습니다.";
+        noImagesMessage.classList.add("noImagesMessage");
+        imageContainer.appendChild(noImagesMessage);
+      } else{
 
       fileRefs.items.forEach(async (fileRef) => {
         try {
@@ -168,10 +187,13 @@ function Category() {
           console.error("이미지를 불러오는 중 오류 발생:", error);
         }
       });
+
+      }
     } catch (error) {
       console.error("파일 목록을 불러오는 중 오류 발생:", error);
     }
   };
+
   const handleCreateClick = async () => {
     try {
       const uid = currentUser.uid;
@@ -206,31 +228,51 @@ function Category() {
 
   const renderButtons = () => {
     return (
-      <div key={buttonRenderKey}>
+      <div className="selectCatagory" key={buttonRenderKey}>
         {" "}
         {/* 키를 변경하여 새로 렌더링 */}
         {userKeys.map((key) => (
-          <button key={key} onClick={() => handleButtonClick(key)}>
+          <button 
+            className={`catagoryButton ${selectedButton === key ? 'selected' : ''}`} 
+            key={key} 
+            onClick={() => handleButtonClick(key)}
+          >
             {key}
           </button>
         ))}
       </div>
     );
   };
+  
+  //새 카테고리용 모달 창
+  const [isNewCategoryModalOpen, setIsNewCategoryModalOpen] = useState(false);
+
+  const openNewCategoryModal = () => {
+    setIsNewCategoryModalOpen(true);
+  };
+
+  const closeNewCategoryModal = () => {
+    setIsNewCategoryModalOpen(false);
+  };
+
+  useEffect(() => {
+    // 모달이 열릴 때 필요한 작업 수행
+  }, [isNewCategoryModalOpen]);
+
 
   return (
     <div>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-      />
-      <button onClick={handleCreateClick}>생성</button>
+      
+      <button className="newCatagory" onClick={openNewCategoryModal}>
+        카테고리 추가
+      </button> 
+      
       {/* 이미지를 담을 컨테이너 */}
       {renderButtons()}
-      <div><p>{selectedCatagory}</p></div>
       <div id="image-container"></div>
+
       {isModalOpen && (
+        <div className="modal-background" onClick={closeModal}>
         <div style={modalStyle}>
           <span style={closeButtonStyle} onClick={closeModal}>
             &times;
@@ -250,7 +292,27 @@ function Category() {
             style={{ width: "500px", height: "auto" }}
           />
         </div>
+      </div>
       )}
+
+      {/* 새 카테고리 모달 */}
+      {isNewCategoryModalOpen && (
+      <div className="modal-background" onClick={closeNewCategoryModal}>
+        <div style={modalStyle}>
+          <span style={closeButtonStyle} onClick={closeNewCategoryModal}>
+            &times;
+          </span>
+          <h2>새 카테고리 생성</h2>
+          <input
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        />
+        <button onClick={handleCreateClick}>생성</button>
+        </div>
+      </div>
+      )}
+
     </div>
   );
 }

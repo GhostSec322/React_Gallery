@@ -61,7 +61,7 @@ function Home() {
   console.log("Redux State: ", keyValueDict);
 
   return (
-      <div className="setBackground">
+    <div className="setBackground">
         
       <div className="apiArea">
         <div
@@ -84,8 +84,6 @@ function Home() {
         </div>
 
       </div>
-
-      
 
       <div className="noneApi">
           <Catagory />

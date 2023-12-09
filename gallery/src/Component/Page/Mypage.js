@@ -4,6 +4,25 @@ import { auth, db, storage } from "../config";
 import { getDoc, doc, collection, setDoc, deleteDoc } from "firebase/firestore";
 import { ref, deleteObject, listAll } from "firebase/storage";
 import { readKeyValue, updateKeyValue } from "../store";
+import "./Mypage.css"
+import module from "../../api/Axios"
+import { Link } from "react-router-dom";
+
+function BannerImg() {
+  const [images, setImages] = useState([]);
+  const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
+
+  useEffect(() => {
+    const imgNumber = getRandom(0, 10);
+    const fetchRandomImages = async () => {
+      const response = await module.get();
+      setImages(response.data.hits[imgNumber].webformatURL);
+    };
+    fetchRandomImages();
+  }, []);
+
+  return <img src={images} alt="loading" />;
+}
 
 function Mypage() {
   const dispatch = useDispatch();
@@ -172,34 +191,84 @@ function Mypage() {
     }
   };
 
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const updateScroll = () => {
+    setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", updateScroll);
+  }, []);
+
+
   return (
-    <div>
-      <h1>My Page</h1>
-      {userProfile && (
-        <div>
-          <p>사용자 이름: {userProfile.displayName}</p>
-          <p>이메일: {userProfile.email}</p>
-          <img src={userProfile.photoURL} alt="프로필 사진" />
+    
+<div className="setBackground">
+        
+        <div className="apiArea">
+          <div
+            className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"}
+            id="topMenuBar"
+            style={{zIndex: 999}}
+          >
+            <div className="icons">
+                <div className="icons">
+                <Link className="link" to="/Home">Go to Gallery</Link>
+                </div>
+            </div>
+          </div>
+  
+          {/* api연동 그림 영역 */}
+          <div className="banner">
+            <BannerImg></BannerImg>
+          </div>
         </div>
-      )}
-      {Object.keys(keyValueDict).map((key) => (
-        <button key={key} onClick={() => handleButtonClick(key)}>
-          {key}
-        </button>
-      ))}
-      {showModal && (
-        <div className="modal">
-          <p>
-            "{selectedKey}" 카테고리를 삭제하시겠습니까?(삭제시 해당 이미지는
+
+        <div className="userData">
+         {userProfile && (
+          <div>
+            <div className="photoArea" style={{ zIndex: 2 }}>
+              <img src={userProfile.photoURL} alt="프로필 사진" />
+            </div>
+            
+            <p>사용자 이름: {userProfile.displayName}</p>
+            <p>이메일: {userProfile.email}</p>
+            <button onClick={handleAccountDeletion}>계정탈퇴</button>
+          </div>
+        )}
+
+        <div className="profileData">
+          <div className="catagoryArea">
+            <p>생성한 카테고리</p> 
+            {Object.keys(keyValueDict).map((key) => (
+            <button className="catagory" key={key} onClick={() => handleButtonClick(key)}>
+              {key}
+            </button>
+          ))}
+          </div>
+     
+          {showModal && (
+            <div className="overlay">
+              <div className="modal">
+              <p>
+                "{selectedKey}" 카테고리를 삭제하시겠습니까?{<br></br>} (삭제시 해당 이미지는
             모두 삭제 되며 복구가 불가능 합니다 이에 동의하시면 삭제버튼을
             누르세요)
-          </p>
-          <button onClick={handleDeleteConfirmation}>삭제</button>
-          <button onClick={handleCancel}>취소</button>
+              </p>
+              <button onClick={handleDeleteConfirmation}>삭제</button>
+            <button onClick={handleCancel}>취소</button>
+            </div>
+            </div>
+            
+          )}
+
+          
         </div>
-      )}
-      <button onClick={handleAccountDeletion}>계정탈퇴</button>
-    </div>
+
+        </div>
+
+      </div>
   );
 }
 

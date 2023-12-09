@@ -264,6 +264,8 @@ function Category() {
   }, [isNewCategoryModalOpen]);
 
 
+
+
   return (
     <div>
       <button className="newCatagory" onClick={openNewCategoryModal}>
@@ -274,6 +276,7 @@ function Category() {
       {renderButtons()}
       <div id="image-container"></div>
       {isModalOpen && (
+        <div className="modal-background" onClick={closeModal}>
         <div style={modalStyle}>
           <span style={closeButtonStyle} onClick={closeModal}>
             &times;
@@ -282,6 +285,9 @@ function Category() {
           <button onClick={() => handleImageDelete(selectedFileName)}>
             Delete
           </button>
+          <button>
+            Download
+            </button>
           <p>Selected File Name: {selectedFileName}</p>
           <p>Selected Category: {selectedCatagory}</p>
 
@@ -293,6 +299,7 @@ function Category() {
             style={{ width: "500px", height: "auto" }}
           />
         </div>
+      </div>
       )}
 
     {/* 새 카테고리 모달 */}

@@ -82,16 +82,21 @@ function Upload() {
     );
   };
 
+  //드래그 앤 드랍
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const droppedFile = event.dataTransfer.files[0];
+    setSelectedImage(droppedFile);
+  };
+
+
   return (
     <div className='setUpload'>
 
-      <div className='load'>
-        <div className='preview'>
-          {imageUrl && <img src={imageUrl} alt="Uploaded"></img>}
-        </div>
-        <progress className="progress" value={uploadProgress} max="100" /> {/* 프로그래스 바 */}
-      </div>
-      
       <div className='detail'>
         <select className="category" value={selectedKey} onChange={handleKeyChange}>
           <option value="">카테고리 선택</option>
@@ -101,10 +106,24 @@ function Upload() {
             </option>
           ))}
         </select>
-        <div className='filebox'>
-          <label for="select-file">이미지 선택</label>
-          <input id="select-file" type="file" onChange={handleChange} />
+        <div
+          className="dragArea"
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
+           
+          <div className='filebox'>
+            <p>이미지를 드래그 하거나 버튼을 클릭해 주세요</p>
+            <label for="select-file">이미지 선택</label>
+            <input id="select-file" type="file" onChange={handleChange} />
+          </div>
         </div>
+
+        {selectedImage && 
+        <div className="fileInfo"><p>{selectedImage.name}</p>
+          <progress className="progress" value={uploadProgress} max="100" /> {/* 프로그래스 바 */}</div>
+        }
+        
         
         <button className='upload-button' onClick={handleUpload}>Upload</button>
       </div>

@@ -2,7 +2,6 @@
     width: auto;
     display: flex;
     justify-content: center;
- 
 }
 
 .textSize{
@@ -10,7 +9,10 @@
 }
 
 .progress{
-    width: 98%;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 24px;
+    width: 130px;
 }
 
 .category{
@@ -35,9 +37,9 @@
     height: 100%;
 }
 .detail{
-    border: 1px solid red;
-    width: 300px;
-    height: 410px;
+    /* border: 1px solid red; */
+    width: auto;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -49,33 +51,50 @@
 }
 
 .upload-button{
-    width: 50%;
-    height: 40px;
+    margin-top: 10px;
+    width: 100%;
+    height: 60px;
+}
+
+.dragArea{
+    width: 600px;
+    height: 400px;
+    border: 2px dashed black;
+}
+
+
+.filebox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 25%;
 }
 
 .filebox label {
-    display: inline-block;
     padding: .5em .75em;
     color: #000000;
     font-size: inherit;
     line-height: normal;
-    vertical-align: middle;
     background-color: #fdfdfd;
     cursor: pointer;
     border: 1px solid #252525;
-
     border-radius: .25em;
-    margin-bottom: 20px;
   }
   
   .filebox input[type="file"] {  /* 파일 필드 숨기기 */
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip:rect(0,0,0,0);
-    border: 0;
+    display: none;
   }
 
+
+
+.fileInfo{
+    display:flex;
+    margin-top: 10px;
+    width: 100%;
+    height: 50px;
+    border: 1px solid black;
+}
+
+.fileInfo p{
+    margin-left: 10px;
+}

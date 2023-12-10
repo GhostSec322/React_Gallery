@@ -54,9 +54,6 @@ function Category() {
     lineHeight: "30px",
     fontSize: "40px",
     position: "absolute",
-    top: "10px",
-    right: "10px",
-    cursor: "pointer",
   };
 
   useEffect(() => {
@@ -247,7 +244,7 @@ function Category() {
     );
   };
 
-  //새 카테고리용 모달 창
+  //새 카테고리 작성용 모달 창
   const [isNewCategoryModalOpen, setIsNewCategoryModalOpen] = useState(false);
 
   const openNewCategoryModal = () => {
@@ -257,12 +254,6 @@ function Category() {
   const closeNewCategoryModal = () => {
     setIsNewCategoryModalOpen(false);
   };
-
-  useEffect(() => {
-    // 모달이 열릴 때 필요한 작업 수행
-  }, [isNewCategoryModalOpen]);
-
-
 
 
   return (
@@ -303,11 +294,11 @@ function Category() {
               &times;
             </span>
             <h2>새 카테고리 생성</h2>
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
+            <input 
+              type="text" 
+              value={isNewCategoryModalOpen ? inputValue : ""} 
+              onChange={(e) => { if (isNewCategoryModalOpen) { setInputValue(e.target.value); } }} 
+              onClick={(e) => { e.stopPropagation();  }} />
             <button onClick={handleCreateClick}>생성</button>
           </div>
         </div>

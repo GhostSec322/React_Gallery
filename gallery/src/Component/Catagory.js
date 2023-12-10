@@ -53,7 +53,6 @@ function Category() {
     textAlign: "center",
     lineHeight: "30px",
     fontSize: "40px",
-    position: "absolute",
   };
 
   useEffect(() => {

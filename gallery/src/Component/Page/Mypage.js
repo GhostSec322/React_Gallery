@@ -202,15 +202,19 @@ function Mypage() {
   }, []);
 
 
+  const closePopup = () => {
+    // 팝업이 닫혔을때 처리하는 로직
+    setShowModal(false);
+  };
+
   return (
     
 <div className="setBackground">
         
-        <div className="apiArea">
+        <div className="MyapiArea">
           <div
             className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"}
             id="topMenuBar"
-            style={{zIndex: 999}}
           >
             <div className="icons">
                 <div className="icons">
@@ -240,7 +244,7 @@ function Mypage() {
 
         <div className="profileData">
           <div className="catagoryArea">
-            <p>생성한 카테고리</p> 
+            <p>생성한 카테고리</p>
             {Object.keys(keyValueDict).map((key) => (
             <button className="catagory" key={key} onClick={() => handleButtonClick(key)}>
               {key}
@@ -249,16 +253,19 @@ function Mypage() {
           </div>
      
           {showModal && (
-            <div className="overlay">
-              <div className="modal">
-              <p>
-                "{selectedKey}" 카테고리를 삭제하시겠습니까?{<br></br>} (삭제시 해당 이미지는
-            모두 삭제 되며 복구가 불가능 합니다 이에 동의하시면 삭제버튼을
-            누르세요)
-              </p>
-              <button onClick={handleDeleteConfirmation}>삭제</button>
-            <button onClick={handleCancel}>취소</button>
-            </div>
+            <div className="overlay" onClick={closePopup} style={{ zIndex: 1000}}>
+              <div className="modal" style={{ zIndex: 999}}>
+                <p>
+                  "{selectedKey}" 카테고리를 삭제하시겠습니까?{<br></br>} (삭제시 해당 이미지는
+                   모두 삭제 되며 복구가 불가능 합니다 이에 동의하시면 삭제버튼을
+                   누르세요)
+                </p>
+                <div className="modalButtonArea">
+                  <button className="agree" onClick={handleDeleteConfirmation}>삭제</button>
+                  <button className="disAgree" onClick={handleCancel}>취소</button>
+                </div>
+                
+              </div>
             </div>
             
           )}

@@ -56,6 +56,10 @@
     height: 60px;
 }
 
+.upload-button:hover{
+    background-color: gray;
+}
+
 .dragArea{
     width: 600px;
     height: 400px;
@@ -79,6 +83,10 @@
     cursor: pointer;
     border: 1px solid #252525;
     border-radius: .25em;
+  }
+
+  .filebox label:hover{
+    background-color: rgb(189, 187, 187);
   }
   
   .filebox input[type="file"] {  /* 파일 필드 숨기기 */

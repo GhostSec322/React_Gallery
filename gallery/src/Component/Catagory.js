@@ -93,7 +93,6 @@ function Category() {
   const handleImageClick = async (fileName, category) => {
     try {
       setSelectedFileName(fileName);
-      setSelectCatagory(category);
       const uid = currentUser.uid;
       const storage = getStorage();
       const imageRef = ref(storage, `users/${uid}/${category}/${fileName}`);
@@ -281,16 +280,10 @@ function Category() {
           <span style={closeButtonStyle} onClick={closeModal}>
             &times;
           </span>
-          <h2>Selected File Info</h2>
-          <button onClick={() => handleImageDelete(selectedFileName)}>
+          <button className="delete" onClick={() => handleImageDelete(selectedFileName)}>
             Delete
           </button>
-          <button>
-            Download
-            </button>
-          <p>Selected File Name: {selectedFileName}</p>
-          <p>Selected Category: {selectedCatagory}</p>
-
+           <p>{selectedCatagory} / {selectedFileName}</p>
           {/* 이미지를 모달에 출력 */}
 
           <img

@@ -1,0 +1,19 @@
+.log{
+    border: none;
+    margin-right: 20px;
+    width : auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    height : 40px;
+    border-radius: 40px;
+    background-color: rgba(173, 173, 173, 0.8);
+    color: black;
+    font-weight: bold;
+    font-size: 14px;
+  } 
+  
+  .log:hover{
+    color: white;
+    font-size: 14px;
+  }
+  

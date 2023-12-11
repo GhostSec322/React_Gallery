@@ -6,6 +6,26 @@ import Catagory from "./Catagory";
 import Upload from "./Upload";
 import { useNavigate } from "react-router-dom"; // useNavigate 추가
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import './Pixabay.css'
+import module from "../api/Axios";
+
+
+function BannerImg() {
+  const [images, setImages] = useState([]);
+  const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
+
+  useEffect(() => {
+    const imgNumber = getRandom(0, 10);
+    const fetchRandomImages = async () => {
+      const response = await module.get();
+      setImages(response.data.hits[imgNumber].webformatURL);
+    };
+    fetchRandomImages();
+  }, []);
+
+  return <img src={images} alt="loading" />;
+}
+
 
 function Home() {
   const keyValueDict = useSelector((state) => state.keyValueDict);
@@ -37,18 +57,66 @@ function Home() {
     }
   }, [keyValueDict, isLoggedIn]);
 
-  return (
+  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const openPopup = () => {
+    setPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setPopupOpen(false);
+  };
+
+  const UploadPopup = isPopupOpen && (
     <div>
-      {isLoggedIn && (
-        <div>
-          <h1>Home</h1>
-          <Link to="/Mypage">Mypage</Link>
-          <Link to="/">Go to Pixabay</Link>
-          <Logout />
-          <Upload />
-          <Catagory />
+      {/* 어두운 배경 */}
+      <div className="overlay" onClick={closePopup}></div>
+
+      {/* 업로드창 팝업 */}
+      <div className="UploadPopup">
+      <Upload/>
+      </div>
+    </div>
+  );
+
+  const updateScroll = () => {
+    setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", updateScroll);
+  }, []);
+
+  return (
+    <div className="setBackground">
+        
+      <div className="apiArea">
+        <div
+          className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"}
+          id="topMenuBar"
+        >
+          <div className="icons">
+              <div className="icons">
+                <Link to="/Mypage" className="link">Mypage</Link>
+                <Link to="/" className="link">Go to Pixabay</Link>
+                <Logout />
+                <button className="uploadButton" onClick={() => openPopup()}>업로드</button>
+                {UploadPopup}
+              </div>
+          </div>
         </div>
-      )}
+
+        {/* api연동 그림 영역 */}
+        <div className="banner">
+          <BannerImg></BannerImg>
+        </div>
+
+      </div>
+
+      <div className="noneApi">
+          <Catagory />
+      </div>
     </div>
   );
 }

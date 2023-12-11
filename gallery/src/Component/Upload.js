@@ -6,6 +6,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { useSelector } from "react-redux";
+import "./Upload.css"
 
 function Upload() {
   const [imageUrl, setImageUrl] = useState("");
@@ -81,20 +82,52 @@ function Upload() {
     );
   };
 
+  //드래그 앤 드랍
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const droppedFile = event.dataTransfer.files[0];
+    setSelectedImage(droppedFile);
+  };
+
+
   return (
-    <div>
-      <progress value={uploadProgress} max="100" /> {/* 프로그래스 바 */}
-      <select value={selectedKey} onChange={handleKeyChange}>
-        <option value="">카테고리 선택</option>
-        {Object.keys(keyValueDict).map((key) => (
-          <option key={key} value={key}>
-            {key}
-          </option>
-        ))}
-      </select>
-      <input type="file" onChange={handleChange} />
-      <button onClick={handleUpload}>Upload</button>
-      {imageUrl && <img src={imageUrl} alt="Uploaded" />}
+    <div className='setUpload'>
+
+      <div className='detail'>
+        <select className="category" value={selectedKey} onChange={handleKeyChange}>
+          <option value="">카테고리 선택</option>
+          {Object.keys(keyValueDict).map((key) => (
+            <option key={key} value={key}>
+              {key}
+            </option>
+          ))}
+        </select>
+        <div
+          className="dragArea"
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
+           
+          <div className='filebox'>
+            <p>이미지를 드래그 하거나 버튼을 클릭해 주세요</p>
+            <label for="select-file">이미지 선택</label>
+            <input id="select-file" type="file" onChange={handleChange} />
+          </div>
+        </div>
+
+        {selectedImage && 
+        <div className="fileInfo"><p>{selectedImage.name}</p>
+          <progress className="progress" value={uploadProgress} max="100" /> {/* 프로그래스 바 */}</div>
+        }
+        
+        
+        <button className='upload-button' onClick={handleUpload}>Upload</button>
+      </div>
+      
     </div>
   );
 }

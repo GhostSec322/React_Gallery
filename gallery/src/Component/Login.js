@@ -3,8 +3,8 @@ import { auth, provider } from "./config";
 import { signInWithPopup } from "firebase/auth";
 import { Link } from "react-router-dom";
 import Home from "./Home";
-import "./Login.css";
 import Logout from "./Logout";
+import './Log.css'
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -36,7 +36,7 @@ export default function Login() {
         </div>
       ) : (
         <div>
-          <button className="login" onClick={handleLogin}>
+          <button className="log" onClick={handleLogin}>
             Sign in With Google
           </button>
         </div>

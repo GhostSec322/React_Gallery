@@ -1,5 +1,5 @@
 import "./Pixabay.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import module from "../api/Axios";
 import { auth } from "./config";
 import Login from "../Component/Login";
@@ -24,7 +24,7 @@ function CreateImg(props) {
   };
 
   useEffect(() => {
-    //Pixabayapi에서 이미지를 불러오는 로직
+    // Pixabay API에서 이미지를 불러오는 로직
     const fetchRandomImages = async () => {
       try {
         const response = await module.get("", {
@@ -65,18 +65,18 @@ function CreateImg(props) {
     }
   };
 
-  const img = images.map(
-    (
-      image // 이미지를 화면 출력 로직
-    ) => (
-      <div className="img" key={image.id}>
-        <img
-          src={image.largeImageURL}
-          alt="loading"
-          onClick={() => openPopup(image)}
-        />
-      </div>
-    )
+  const img = useMemo(
+    () =>
+      images.map((image) => (
+        <div className="img" key={image.id}>
+          <img
+            src={image.largeImageURL}
+            alt="loading"
+            onClick={() => openPopup(image)}
+          />
+        </div>
+      )),
+    [images] // images가 변경될 때에만 이 useMemo를 다시 계산하도록 설정
   );
 
   const popup = isPopupOpen && (
@@ -134,14 +134,7 @@ function Pixabay() {
 
     return () => unsubscribe();
   }, []);
-  ///////
-  /**useEffect(() => {
-    setQuery("");
-  }, [query]); <=무한 랜더링 현상에 빠질 수 있음 */
-  useEffect(() => {
-    setQuery("");
-  }, []);
-  ////////
+
   const handleInputChange = (e) => {
     setQuery(e.target.value); // input 값이 변경될 때마다 query 값을 업데이트
   };
@@ -153,6 +146,9 @@ function Pixabay() {
 
   useEffect(() => {
     window.addEventListener("scroll", updateScroll);
+    return () => {
+      window.removeEventListener("scroll", updateScroll);
+    };
   }, []);
 
   let content = null;
@@ -181,7 +177,9 @@ function Pixabay() {
           <div className="icons">
             {isLoggedIn ? (
               <div className="icons">
-                <Link className="link" to="/Home">Go to Gallery</Link>
+                <Link className="link" to="/Home">
+                  Go to Gallery
+                </Link>
                 <Logout />
               </div>
             ) : (
@@ -190,9 +188,9 @@ function Pixabay() {
           </div>
         </div>
 
-        {/* api연동 그림 영역 */}
+        {/* API 연동 그림 영역 */}
         <div className="banner">
-          <BannerImg></BannerImg>
+          <BannerImg />
         </div>
 
         <div className="search">
@@ -206,7 +204,7 @@ function Pixabay() {
       </div>
 
       <div className="noneApi">
-        <CreateImg query={query}></CreateImg>
+        <CreateImg query={query} />
       </div>
     </div>
   );

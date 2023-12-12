@@ -18,7 +18,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
-alert(db);
+
 // Storage 서비스에 대한 참조 가져오기
 const storage = getStorage(app);
 

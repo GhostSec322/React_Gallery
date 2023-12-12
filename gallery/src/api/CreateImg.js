@@ -25,6 +25,7 @@ function CreateImg(props) {
           const response = await module.get("", {
             params: {
               q: props.query,
+              per_page: props.page,
             },
           });
           setImages(response.data.hits);
@@ -33,7 +34,7 @@ function CreateImg(props) {
         }
       };
       fetchRandomImages();
-    }, [props.query]);
+    }, [props.query,props.page]);
   
     const downloadImage = () => {
       // 이미지 다운로드 로직
@@ -96,7 +97,7 @@ function CreateImg(props) {
   
     return (
       <>
-        <div className="imgArea">{img}</div>
+        {img}
         {popup}
       </>
     );

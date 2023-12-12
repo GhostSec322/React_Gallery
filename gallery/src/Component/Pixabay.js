@@ -12,6 +12,8 @@ function Pixabay() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [query, setQuery] = useState("");
+  const [page, setPage]= useState(10);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setIsLoggedIn(!!user); // user가 있는 경우 true, 없는 경우 false로 상태 설정
@@ -19,12 +21,7 @@ function Pixabay() {
 
     return () => unsubscribe();
   }, []);
-  ///////
-  /**useEffect(() => {
-    setQuery("");
-  }, [query]); <=무한 랜더링 현상에 빠질 수 있음 */
-
-
+ 
   ////////
   const handleInputChange = (e) => {
     setQuery(e.target.value); // input 값이 변경될 때마다 query 값을 업데이트
@@ -60,6 +57,15 @@ function Pixabay() {
     );
   }
 
+  const extraPage = () => {
+    setPage((prevPage) => {
+      const nextPage = prevPage + 10;
+      console.log(nextPage);
+      return nextPage;
+    });
+  };
+  
+
   return (
     <div className="setBackground">
       <div className="apiArea">
@@ -84,36 +90,30 @@ function Pixabay() {
      
         {/* api연동 그림 영역 */}
      
-          <BannerImg></BannerImg>
-      
-        
+        <BannerImg></BannerImg>
         <div className="search">
-
-          <div className="info">
-
-            <div className="title">
+        <div className="info">
+          <div className="title">
               Picture
-            </div>
-
-            <div className="body">
-            Pixabay API에서 제공하는 무료 이미지를 검색하고 다운로드 하세요
-            </div>
-              
           </div>
-                
+          <div className="body">
+            Pixabay API에서 제공하는 무료 이미지를 검색하고 다운로드 하세요
+          </div>  
+        </div>  
           <input
             type="text"
             value={query}
             placeholder="태그로 검색"
             onChange={handleInputChange} // input 값이 변경될 때마다 query 값을 업데이트
           />
-
         </div>
       </div>
 
       <div className="noneApi">
-        <CreateImg query={query}></CreateImg>
+        <CreateImg query={query} page={page}></CreateImg>
+        
       </div>
+      <button className="updatePage" onClick={extraPage}>더보기</button>
     </div>
   );
 }

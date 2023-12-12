@@ -8,7 +8,11 @@ function BannerImg() {
     useEffect(() => {
       const imgNumber = getRandom(0, 10);
       const fetchRandomImages = async () => {
-        const response = await module.get();
+        const response = await module.get("", {
+          params: {
+            per_page: 20,
+          },
+        });
         setImages(response.data.hits[imgNumber].webformatURL);
       };
       fetchRandomImages();

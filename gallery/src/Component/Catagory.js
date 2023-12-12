@@ -257,7 +257,7 @@ function Category() {
 
 
   return (
-    <div>
+    <div className="CataGory">
       <button className="newCatagory" onClick={openNewCategoryModal}>
         카테고리 추가
       </button> 

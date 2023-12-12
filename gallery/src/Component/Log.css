@@ -1,4 +1,25 @@
 .log{
+  font-weight: bold;
+  border: none;
+  margin-left: 10px;
+  margin-right: 20px;
+  width : auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  height : 40px;
+  border-radius: 40px;
+  background-color: transparent;
+  color: white;
+  font-size: 14px;
+  } 
+
+  .log:hover{
+    background-color: rgba(173, 173, 173, 0.356);
+    font-size: 14px;
+  }
+
+  .scrolled-log{
+    margin-left: 10px;
     border: none;
     margin-right: 20px;
     width : auto;
@@ -6,14 +27,14 @@
     padding-right: 10px;
     height : 40px;
     border-radius: 40px;
-    background-color: rgba(173, 173, 173, 0.8);
+    background-color: transparent;
     color: black;
     font-weight: bold;
     font-size: 14px;
-  } 
-  
-  .log:hover{
-    color: white;
+  }
+
+  .scrolled-log:hover{
+    background-color: rgba(173, 173, 173, 0.356);
     font-size: 14px;
   }
   

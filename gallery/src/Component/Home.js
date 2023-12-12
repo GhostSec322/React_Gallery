@@ -7,24 +7,8 @@ import Upload from "./Upload";
 import { useNavigate } from "react-router-dom"; // useNavigate 추가
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import './Pixabay.css'
-import module from "../api/Axios";
+import BannerImg from "../api/BannerImg"
 
-
-function BannerImg() {
-  const [images, setImages] = useState([]);
-  const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
-
-  useEffect(() => {
-    const imgNumber = getRandom(0, 10);
-    const fetchRandomImages = async () => {
-      const response = await module.get();
-      setImages(response.data.hits[imgNumber].webformatURL);
-    };
-    fetchRandomImages();
-  }, []);
-
-  return <img src={images} alt="loading" />;
-}
 
 
 function Home() {
@@ -80,13 +64,48 @@ function Home() {
     </div>
   );
 
-  const updateScroll = () => {
-    setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+  //메뉴 더보기 팝업
+
+  const [isMenuPopupOpen, setMenuPopupOpen] = useState(false);
+  
+  const openMunuPopup = () => {
+    setMenuPopupOpen(true);
   };
 
+  const closeMenuPopup = () => {
+    setMenuPopupOpen(false);
+  };
+
+  const menuPopup = isMenuPopupOpen && (
+    <div>
+      {/* 어두운 배경 */}
+      <div className="menuBack" onClick={closeMenuPopup}></div>
+
+      {/* 업로드창 팝업 */}
+      <div className="menuPopup">
+        <Link to="/Mypage" className="menuBtn">Mypage</Link>
+        <Link to="/" className="menuBtn" >Picture</Link>
+        <Logout />
+      </div>
+
+    </div>
+  );
+
+
   useEffect(() => {
+    const updateScroll = () => {
+      setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+    };
+
     window.addEventListener("scroll", updateScroll);
-  }, []);
+ 
+    return () => {
+      window.removeEventListener("scroll", updateScroll);
+    };
+  }, []); 
+
+
+  
 
   return (
     <div className="setBackground">
@@ -96,20 +115,36 @@ function Home() {
           className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"}
           id="topMenuBar"
         >
-          <div className="icons">
+          <div className={scrollPosition > 30 ? "scrolled-logo":"logo"}>
+            Gallery
+        </div>
               <div className="icons">
-                <Link to="/Mypage" className="link">Mypage</Link>
-                <Link to="/" className="link">Go to Pixabay</Link>
-                <Logout />
+                <button 
+                  style={isMenuPopupOpen ? { backgroundColor: 'rgba(173, 173, 173, 0.356)' } : {}}
+                  className={scrollPosition > 30 ? "scrolled-more":"more"}  onClick={()=>openMunuPopup()}>더보기</button>
                 <button className="uploadButton" onClick={() => openPopup()}>업로드</button>
                 {UploadPopup}
+                {menuPopup}
               </div>
-          </div>
+          
         </div>
 
         {/* api연동 그림 영역 */}
-        <div className="banner">
+     
           <BannerImg></BannerImg>
+     
+
+        <div className="search">
+
+          <div className="info">
+            <div className="title">
+              Gallery
+            </div>
+            <div className="body">
+            여러분의 사진을 카테고리 별로 분류하고 저장하세요 
+            </div>  
+          </div>
+          
         </div>
 
       </div>

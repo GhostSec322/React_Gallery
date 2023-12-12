@@ -5,24 +5,9 @@ import { getDoc, doc, collection, setDoc, deleteDoc } from "firebase/firestore";
 import { ref, deleteObject, listAll } from "firebase/storage";
 import { readKeyValue, updateKeyValue } from "../store";
 import "./Mypage.css"
-import module from "../../api/Axios"
 import { Link } from "react-router-dom";
+import BannerImg from "../../api/BannerImg";
 
-function BannerImg() {
-  const [images, setImages] = useState([]);
-  const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
-
-  useEffect(() => {
-    const imgNumber = getRandom(0, 10);
-    const fetchRandomImages = async () => {
-      const response = await module.get();
-      setImages(response.data.hits[imgNumber].webformatURL);
-    };
-    fetchRandomImages();
-  }, []);
-
-  return <img src={images} alt="loading" />;
-}
 
 function Mypage() {
   const dispatch = useDispatch();
@@ -193,17 +178,18 @@ function Mypage() {
 
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  const updateScroll = () => {
-    setScrollPosition(window.scrollY || document.documentElement.scrollTop);
-  };
-
   useEffect(() => {
-    window.addEventListener("scroll", updateScroll);
-  }, []);
+    const updateScroll = () => {
+      setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+    };
 
+    window.addEventListener("scroll", updateScroll);
+    return () => {
+      window.removeEventListener("scroll", updateScroll);
+    };
+  }, []); 
 
   const closePopup = () => {
-    // 팝업이 닫혔을때 처리하는 로직
     setShowModal(false);
   };
 
@@ -216,17 +202,32 @@ function Mypage() {
             className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"}
             id="topMenuBar"
           >
+            <div className={scrollPosition > 30 ? "scrolled-logo":"logo"}>
+            MyPage
+            </div>
             <div className="icons">
-                <div className="icons">
-                <Link className="link" to="/Home">Go to Gallery</Link>
+                <Link className={scrollPosition > 30 ? "scrolled-link":"link"} to="/Home">Go to Gallery</Link>
                 </div>
             </div>
-          </div>
+          
   
           {/* api연동 그림 영역 */}
-          <div className="banner">
+       
             <BannerImg></BannerImg>
+  
+
+          <div className="search">
+
+          <div className="info">
+            <div className="title">
+              Mypage
+            </div>
+            <div className="body">
+            여러분의 정보와 생성한 카테고리를 확인/삭제하세요
+            </div>  
           </div>
+          
+        </div>
         </div>
 
         <div className="userData">
@@ -253,7 +254,7 @@ function Mypage() {
           </div>
      
           {showModal && (
-            <div className="overlay" onClick={closePopup} style={{ zIndex: 1000}}>
+            <div className="Myoverlay" onClick={closePopup} style={{ zIndex: 1000}}>
               <div className="modal" style={{ zIndex: 999}}>
                 <p>
                   "{selectedKey}" 카테고리를 삭제하시겠습니까?{<br></br>} (삭제시 해당 이미지는

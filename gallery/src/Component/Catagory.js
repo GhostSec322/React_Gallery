@@ -167,6 +167,7 @@ function Category() {
           const img = new Image();
           img.src = downloadURL;
           img.alt = "Resized Image";
+          img.style.objectFit = "cover"; 
           img.style.width = "100%";
           img.style.height = "100%";
 
@@ -276,11 +277,14 @@ function Category() {
            <p>{selectedCatagory} / {selectedFileName}</p>
           {/* 이미지를 모달에 출력 */}
 
-          <img
+          <div className="modalImgArea">
+            <img
             src={selectedImage}
             alt="Selected"
-            style={{ width: "500px", height: "auto" }}
+            style={{width:'100%', height:"auto"}}
           />
+          </div>
+       
         </div>
       </div>
       )}

@@ -6,7 +6,7 @@ import Home from "./Home";
 import Logout from "./Logout";
 import './Log.css'
 
-export default function Login() {
+export default function Login({scrollPosition}) {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
@@ -28,6 +28,7 @@ export default function Login() {
       });
   };
 
+
   return (
     <div>
       {email ? (
@@ -36,7 +37,7 @@ export default function Login() {
         </div>
       ) : (
         <div>
-          <button className="log" onClick={handleLogin}>
+          <button className={scrollPosition > 30 ? "scrolled-log":"log"} onClick={handleLogin}>
             Sign in With Google
           </button>
         </div>

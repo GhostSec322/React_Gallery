@@ -23,25 +23,6 @@
   }
   
   
-  #topMenuBar{
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    width: 100%;
-    height: auto;
-    /* background-color: white;  */
-    /* border: 1px solid orange; */
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  #topMenuBar > *{
-   margin-top: 15px;
-   margin-bottom: 15px;
-   margin-right: 15px;
-  }
-  
   
   
   .scroll-color {
@@ -59,13 +40,13 @@
     height: 100%;
   }
   
-  .overlay {
+  .Myoverlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.212); /* 반투명한 어두운 배경 */
+    background-color: rgba(0, 0, 0, 0.212); /* 반투명한 어두운 배경 */
   }
   
   .modal {

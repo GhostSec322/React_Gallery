@@ -108,20 +108,27 @@ function Upload() {
         </select>
         <div
           className="dragArea"
+          style={selectedImage ? { backgroundColor: 'rgba(240, 134, 134,0.3'} : {}}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
         >
            
-          <div className='filebox'>
-            <p>이미지를 드래그 하거나 버튼을 클릭해 주세요</p>
+          <div 
+            className='filebox'>
             <label for="select-file">이미지 선택</label>
+            <p 
+              style={selectedImage ? { fontWeight: 'bold', fontSize: '20px'} : {}}
+            >{selectedImage ? '이미지가 선택되었습니다'  : '이미지를 선택하거나 드래그 해 주세요'}</p>
+            
             <input id="select-file" type="file" onChange={handleChange} />
           </div>
         </div>
 
         {selectedImage && 
         <div className="fileInfo"><p>{selectedImage.name}</p>
-          <progress className="progress" value={uploadProgress} max="100" /> {/* 프로그래스 바 */}</div>
+        <progress className="progress" value={uploadProgress} max="100" /> {/* 프로그래스 바 */}
+        {uploadProgress === 100 && <div className="uploadComplete"><p>완료</p></div>}
+        </div>
         }
         
         

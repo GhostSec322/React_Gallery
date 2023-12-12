@@ -102,3 +102,9 @@
   background-color: rgb(243, 198, 198);
   font-weight: bold;
 }
+
+.modalImgArea{
+  width: 500px;
+  max-height: 500px;
+  overflow-y: auto;
+}

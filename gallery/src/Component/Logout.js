@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, {useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import "./Log.css"
 
-const Logout = () => {
+const Logout = ({ scrollPosition }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -33,7 +33,8 @@ const Logout = () => {
     return () => unsubscribe();
   }, []);
 
-  return <button className="log" onClick={handleLogout}>로그아웃</button>;
+ 
+  return <button className={scrollPosition > 30 ? "scrolled-log":"log"} onClick={handleLogout}>로그아웃</button>;
 };
 
 export default Logout;

@@ -5,6 +5,7 @@ import Home from "./Component/Home";
 import Login from "./Component/Login";
 import Pixabay from "./Component/Pixabay";
 import Mypage from "./Component/Page/Mypage";
+
 function App() {
   return (
     <Router>

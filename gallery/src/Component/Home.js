@@ -6,10 +6,8 @@ import Catagory from "./Catagory";
 import Upload from "./Upload";
 import { useNavigate } from "react-router-dom"; // useNavigate 추가
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import './Pixabay.css'
-import BannerImg from "../api/BannerImg"
-
-
+import "./Pixabay.css";
+import BannerImg from "../api/BannerImg";
 
 function Home() {
   const keyValueDict = useSelector((state) => state.keyValueDict);
@@ -59,7 +57,7 @@ function Home() {
 
       {/* 업로드창 팝업 */}
       <div className="UploadPopup">
-      <Upload/>
+        <Upload />
       </div>
     </div>
   );
@@ -67,7 +65,7 @@ function Home() {
   //메뉴 더보기 팝업
 
   const [isMenuPopupOpen, setMenuPopupOpen] = useState(false);
-  
+
   const openMunuPopup = () => {
     setMenuPopupOpen(true);
   };
@@ -83,14 +81,16 @@ function Home() {
 
       {/* 업로드창 팝업 */}
       <div className="menuPopup">
-        <Link to="/Mypage" className="menuBtn">Mypage</Link>
-        <Link to="/" className="menuBtn" >Picture</Link>
+        <Link to="/Mypage" className="menuBtn">
+          Mypage
+        </Link>
+        <Link to="/" className="menuBtn">
+          Picture
+        </Link>
         <Logout />
       </div>
-
     </div>
   );
-
 
   useEffect(() => {
     const updateScroll = () => {
@@ -98,59 +98,58 @@ function Home() {
     };
 
     window.addEventListener("scroll", updateScroll);
- 
+
     return () => {
       window.removeEventListener("scroll", updateScroll);
     };
-  }, []); 
-
-
-  
+  }, []);
 
   return (
     <div className="setBackground">
-        
       <div className="apiArea">
         <div
           className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"}
           id="topMenuBar"
         >
-          <div className={scrollPosition > 30 ? "scrolled-logo":"logo"}>
+          <div className={scrollPosition > 30 ? "scrolled-logo" : "logo"}>
             Gallery
-        </div>
-              <div className="icons">
-                <button 
-                  style={isMenuPopupOpen ? { backgroundColor: 'rgba(173, 173, 173, 0.356)' } : {}}
-                  className={scrollPosition > 30 ? "scrolled-more":"more"}  onClick={()=>openMunuPopup()}>더보기</button>
-                <button className="uploadButton" onClick={() => openPopup()}>업로드</button>
-                {UploadPopup}
-                {menuPopup}
-              </div>
-          
+          </div>
+          <div className="icons">
+            <button
+              style={
+                isMenuPopupOpen
+                  ? { backgroundColor: "rgba(173, 173, 173, 0.356)" }
+                  : {}
+              }
+              className={scrollPosition > 30 ? "scrolled-more" : "more"}
+              onClick={() => openMunuPopup()}
+            >
+              더보기
+            </button>
+            <button className="uploadButton" onClick={() => openPopup()}>
+              업로드
+            </button>
+            {UploadPopup}
+            {menuPopup}
+          </div>
         </div>
 
         {/* api연동 그림 영역 */}
-     
-          <BannerImg></BannerImg>
-     
+
+        <BannerImg></BannerImg>
 
         <div className="search">
-
           <div className="info">
-            <div className="title">
-              Gallery
-            </div>
+            <div className="title">Gallery</div>
             <div className="body">
-            여러분의 사진을 카테고리 별로 분류하고 저장하세요 
-            </div>  
+              여러분의 사진을 카테고리 별로 분류하고 저장하세요
+            </div>
           </div>
-          
         </div>
-
       </div>
 
       <div className="noneApi">
-          <Catagory />
+        <Catagory />
       </div>
     </div>
   );

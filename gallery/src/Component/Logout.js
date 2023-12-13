@@ -25,7 +25,7 @@ const Logout = ({ scrollPosition }) => {
       if (user) {
         const logoutTimer = setTimeout(() => {
           handleLogout();
-        }, 1000 * 5);
+        }, 1000 * (60 * 5)); // 1000ms =>1s  => 1000 *(60*5) =>5min
 
         return () => clearTimeout(logoutTimer);
       }

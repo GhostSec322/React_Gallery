@@ -8,8 +8,8 @@ import { useNavigate } from "react-router-dom"; // useNavigate 추가
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import './Pixabay.css'
 import BannerImg from "../api/BannerImg"
-
-
+import { MdOutlineExpandMore } from "react-icons/md";
+import { MdUpload } from "react-icons/md";
 
 function Home() {
   const keyValueDict = useSelector((state) => state.keyValueDict);
@@ -121,8 +121,8 @@ function Home() {
               <div className="icons">
                 <button 
                   style={isMenuPopupOpen ? { backgroundColor: 'rgba(173, 173, 173, 0.356)' } : {}}
-                  className={scrollPosition > 30 ? "scrolled-more":"more"}  onClick={()=>openMunuPopup()}>더보기</button>
-                <button className="uploadButton" onClick={() => openPopup()}>업로드</button>
+                  className={scrollPosition > 30 ? "scrolled-more":"more"}  onClick={()=>openMunuPopup()}>더보기<MdOutlineExpandMore className="moreIcon" size="20px" /></button>
+                <button className="uploadButton" onClick={() => openPopup()}> <MdUpload className="uploadIcon" />업로드</button>
                 {UploadPopup}
                 {menuPopup}
               </div>

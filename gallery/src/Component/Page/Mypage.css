@@ -22,24 +22,6 @@
     flex-direction: column;
   }
   
-  
-  
-  
-  .scroll-color {
-    background-color:white;
-    transition: 0.3s;
-  }
-  
-  .scrolled-color { 
-    background-color:transparent;
-    transition: 0.3s;
-  }
-  
-  .banner img{
-    width: 100%;
-    height: 100%;
-  }
-  
   .Myoverlay {
     position: fixed;
     top: 0;
@@ -78,7 +60,18 @@
     border: 4px solid black;
     background-color: white;
   }
+
+  .photo_quit{
+     display: flex;
+     align-items: flex-end;
+  }
   
+  .quit{
+    margin-left: 10px;
+    font-size: 20px;
+    font-weight: bolder;
+  }
+
   .photoArea img{
     width: 100%;
     height: 100%;
@@ -87,13 +80,14 @@
   .profileData{
     /*여기서 이미지영역 넓이 지정*/
     width: 100%;
-    height: 500px;
+    height: auto;
     border: 3px dashed black; 
     top: 560px;
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
+    margin-top: 30px;
     align-items: center;
+    margin-bottom: 500px;
   }
 
   .profileData p{
@@ -101,35 +95,91 @@
     font-size: 18px;
   }
 
-  .catagoryArea p{
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
+  .catagoryArea{
+    margin-bottom: 50px;
   }
-
+  .catagoryTextArea{
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .catagoryTextArea p{
+    margin:0;
+  }
   .catagory{
     border: none;
+    margin-top: 10px;
     margin-right: 20px;
     width : 100px;
     height : 34px;
     border-radius: 40px;
-    background-color: rgba(173, 173, 173, 0.8);
+    background-color: rgba(173, 173, 173, 0.327);
     color: black;
     font-weight: bold;
     font-size: 14px;
   }
 
-    .catagory:hover{
+  .catagory.selected{
+    background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+  }
+  .catagory:hover{
+      background-color: rgba(0, 0, 0, 0.8);
       color: white;
     }
- /* .modalButtonArea{
-    border: 1px solid;
- } */
+ 
  .agree{
-  margin-right: 10px;
-  width: 60px;
+  border: none;
+  margin-right: 20px;
+  width : 100px;
+  height : 34px;
+  border-radius: 40px;
+  background-color: rgba(173, 173, 173, 0.327);
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+ }
+
+ .agree:hover{
+  color: white;
+  background-color: rgba(0, 0, 0, 0.8);
+  font-size: 16px;
+  cursor: pointer;
  }
 
  .disAgree{
-  width: 60px;
+  border: none;
+  margin-right: 20px;
+  width : 100px;
+  height : 34px;
+  border-radius: 40px;
+  background-color: rgba(173, 173, 173, 0.327);
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
  }
+
+ .disAgree:hover{
+  color: white;
+  background-color: rgba(0, 0, 0, 0.8);
+  font-size: 16px;
+  cursor: pointer;
+ }
+
+.name{
+  font-weight: bold;
+  font-size: 40px;
+  margin: 0;
+}
+
+.email{
+  margin: 0;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  font-weight: bolder;
+}
+
+.name_email{
+  display: flex;
+  align-items: flex-end;
+}

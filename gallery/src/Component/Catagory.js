@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { FaCirclePlus } from "react-icons/fa6";
 import "./Catagory.css"
 import {
   collection,
@@ -39,8 +40,9 @@ function Category() {
     left: "50%",
     transform: "translate(-50%, -50%)",
     backgroundColor: "#fff",
-    padding: "20px",
+    padding: "10px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    borderRadius:'20px',
   };
 
   const closeButtonStyle = {
@@ -259,32 +261,29 @@ function Category() {
   return (
     <div className="CataGory">
       <button className="newCatagory" onClick={openNewCategoryModal}>
-        카테고리 추가
+        카테고리 추가 <FaCirclePlus className="plus" />
       </button> 
-      
-      {/* 이미지를 담을 컨테이너 */}
       {renderButtons()}
-      <div id="image-container"></div>
+      <div id="image-container"/>
       {isModalOpen && (
         <div className="modal-background" onClick={closeModal}>
         <div style={modalStyle}>
           <span style={closeButtonStyle} onClick={closeModal}>
             &times;
           </span>
-          <button className="delete" onClick={() => handleImageDelete(selectedFileName)}>
-            Delete
-          </button>
-           <p>{selectedCatagory} / {selectedFileName}</p>
-          {/* 이미지를 모달에 출력 */}
-
+          <p>
+            {selectedCatagory} / {selectedFileName}
+          </p>
           <div className="modalImgArea">
             <img
             src={selectedImage}
             alt="Selected"
             style={{width:'100%', height:"auto"}}
-          />
+             />
           </div>
-       
+          <button className="delete" onClick={() => handleImageDelete(selectedFileName)}>
+              Delete
+          </button>
         </div>
       </div>
       )}
@@ -293,16 +292,14 @@ function Category() {
       {isNewCategoryModalOpen && (
         <div className="modal-background" onClick={closeNewCategoryModal}>
           <div style={modalStyle}>
-            <span style={closeButtonStyle} onClick={closeNewCategoryModal}>
-              &times;
-            </span>
             <h2>새 카테고리 생성</h2>
-            <input 
+            <div className="createCatagoryInput">
+              <input 
               type="text" 
               value={isNewCategoryModalOpen ? inputValue : ""} 
               onChange={(e) => { if (isNewCategoryModalOpen) { setInputValue(e.target.value); } }} 
               onClick={(e) => { e.stopPropagation();  }} />
-            <button onClick={handleCreateClick}>생성</button>
+            <button onClick={handleCreateClick}>생성</button></div>
           </div>
         </div>
       )}

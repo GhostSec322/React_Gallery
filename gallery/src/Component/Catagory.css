@@ -13,6 +13,10 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+#image-container div:hover{
+  cursor: pointer;
+}
+
 #image-container div p{
   margin: 0px 0px 0px 0px; line-height: 120%;
   overflow: hidden;  		
@@ -28,7 +32,7 @@
   width : 100px;
   height : 34px;
   border-radius: 40px;
-   background-color: rgba(173, 173, 173, 0.8);
+  background-color: rgba(173, 173, 173, 0.327);
   color: black;
   font-weight: bold;
   font-size: 14px;
@@ -38,6 +42,7 @@
   color: white;
   background-color: rgba(0, 0, 0, 0.8);
   font-size: 16px;
+  cursor: pointer;
 }
 
 .catagoryButton.selected {
@@ -52,20 +57,28 @@
 }
 
 .newCatagory{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-top: 20px;
   border: none;
   width : 100%;
-  height : 50px;
   border-radius: 40px;
   background-color: rgba(31, 84, 255, 0.8);
   color: white;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 21px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.plus{
+ margin-left: 5px;
 }
 
 .newCatagory:hover{
   background-color: rgba(62, 106, 252, 0.8);
-  font-size: 21px;
+  cursor: pointer;
 }
 
 .noImagesMessage {
@@ -89,22 +102,52 @@
 }
 
 .delete{
-  width: 70px;
-  height: 40px;
-  margin-bottom: 10px;
-  font-weight: bold;
+  float: right;
+  margin-top: 10px;
+  font-weight: 400px;
+  font-size: 20px;
+  border: none;
+  background-color:transparent;
+  border-radius: 40px;
+  padding: 10px;
 }
+
 .delete:hover{
-  border: 2px solid rgb(255, 160, 160);
-  width: 70px;
-  height: 40px;
-  margin-bottom: 10px;
-  background-color: rgb(243, 198, 198);
+  background-color: rgba(173, 173, 173, 0.356);
   font-weight: bold;
+  cursor: pointer;
 }
 
 .modalImgArea{
   width: 500px;
   max-height: 500px;
   overflow-y: auto;
+}
+
+.createCatagoryInput{
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.createCatagoryInput input{
+  border: none;
+  height: 30px;
+  font-size: 15px;
+}
+
+.createCatagoryInput button{
+  border: none;
+  border-left: 1px solid black;
+  width: 80px;
+  height: 30px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.createCatagoryInput button:hover{
+  font-weight: bold;
+  cursor: pointer;
 }

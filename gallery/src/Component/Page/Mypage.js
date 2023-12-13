@@ -16,6 +16,7 @@ function Mypage() {
   const [selectedKey, setSelectedKey] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
+  const [selectedButton, setSelectedButton] = useState(""); // 새로운 상태 추가
 
   const [updatedKeyValueDict, setUpdatedKeyValueDict] = useState({});
   const [categoryPath, setCategoryPath] = useState(null);
@@ -68,6 +69,7 @@ function Mypage() {
   }, []);
 
   const handleButtonClick = (key) => {
+    setSelectedButton(key);
     setSelectedKey(key);
     setShowModal(true);
   };
@@ -191,6 +193,7 @@ function Mypage() {
 
   const closePopup = () => {
     setShowModal(false);
+    setSelectedButton(null);
   };
 
   return (
@@ -232,22 +235,31 @@ function Mypage() {
 
         <div className="userData">
          {userProfile && (
-          <div>
-            <div className="photoArea" style={{ zIndex: 2 }}>
-              <img src={userProfile.photoURL} alt="프로필 사진" />
+          <div >
+            <div className="photo_quit">
+              <div className="photoArea" style={{ zIndex: 2 }}>
+                <img src={userProfile.photoURL} alt="프로필 사진" />
+              </div>
+              <button className="quit" onClick={handleAccountDeletion}>계정탈퇴</button>
             </div>
-            
-            <p>사용자 이름: {userProfile.displayName}</p>
-            <p>이메일: {userProfile.email}</p>
-            <button onClick={handleAccountDeletion}>계정탈퇴</button>
+            <div className="name_email">
+              <p className="name">{userProfile.displayName}</p>
+              <p className="email">({userProfile.email})</p>
+            </div>
           </div>
         )}
 
         <div className="profileData">
           <div className="catagoryArea">
-            <p>생성한 카테고리</p>
+            <div className="catagoryTextArea">
+              <p style={{fontSize:"30px", marginTop:"10px", marginBottom:"10px", padding:0}}>생성한 카테고리</p>
+              <p>카테고리를 삭제하고 싶다면 클릭하세요</p>
+            </div>      
             {Object.keys(keyValueDict).map((key) => (
-            <button className="catagory" key={key} onClick={() => handleButtonClick(key)}>
+            <button  
+              className={`catagory ${selectedButton === key ? 'selected' : ''}`}  
+              key={key} 
+              onClick={() => handleButtonClick(key)}>
               {key}
             </button>
           ))}

@@ -7,12 +7,11 @@ import { Link } from "react-router-dom";
 import BannerImg from "../api/BannerImg";
 import CreateImg from "../api/CreateImg";
 
-
 function Pixabay() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [query, setQuery] = useState("");
-  const [page, setPage]= useState(10);
+  const [page, setPage] = useState(10);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -21,7 +20,7 @@ function Pixabay() {
 
     return () => unsubscribe();
   }, []);
- 
+
   ////////
   const handleInputChange = (e) => {
     setQuery(e.target.value); // input 값이 변경될 때마다 query 값을 업데이트
@@ -40,7 +39,6 @@ function Pixabay() {
       window.removeEventListener("scroll", updateScroll);
     };
   }, []); // 빈 배열을 전달하여 한 번만 실행되도록 설정
-
 
   let content = null;
 
@@ -64,7 +62,6 @@ function Pixabay() {
       return nextPage;
     });
   };
-  
 
   return (
     <div className="setBackground">
@@ -73,33 +70,35 @@ function Pixabay() {
           className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"}
           id="topMenuBar"
         >
-        <div className={scrollPosition > 30 ? "scrolled-logo":"logo"}>
+          <div className={scrollPosition > 30 ? "scrolled-logo" : "logo"}>
             Picture
-        </div>
-          {content}
-            {isLoggedIn ? (
-              <div className="icons">
-                <Link className={scrollPosition > 30 ? "scrolled-link":"link"} to="/Home">Gallery</Link>
-                <Logout scrollPosition={scrollPosition} />
-              </div>
-            ) : (
-              <Login scrollPosition={scrollPosition}/>
-            )}
-
           </div>
-     
+          {content}
+          {isLoggedIn ? (
+            <div className="icons">
+              <Link
+                className={scrollPosition > 30 ? "scrolled-link" : "link"}
+                to="/Home"
+              >
+                Gallery
+              </Link>
+              <Logout scrollPosition={scrollPosition} />
+            </div>
+          ) : (
+            <Login scrollPosition={scrollPosition} />
+          )}
+        </div>
+
         {/* api연동 그림 영역 */}
-     
+
         <BannerImg></BannerImg>
         <div className="search">
-        <div className="info">
-          <div className="title">
-              Picture
+          <div className="info">
+            <div className="title">Picture</div>
+            <div className="body">
+              Pixabay API에서 제공하는 무료 이미지를 검색하고 다운로드 하세요
+            </div>
           </div>
-          <div className="body">
-            Pixabay API에서 제공하는 무료 이미지를 검색하고 다운로드 하세요
-          </div>  
-        </div>  
           <input
             type="text"
             value={query}
@@ -111,9 +110,10 @@ function Pixabay() {
 
       <div className="noneApi">
         <CreateImg query={query} page={page}></CreateImg>
-        
       </div>
-      <button className="updatePage" onClick={extraPage}>더보기</button>
+      <button className="updatePage" onClick={extraPage}>
+        더보기
+      </button>
     </div>
   );
 }

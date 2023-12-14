@@ -1,7 +1,8 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import "./Log.css"
+import "./Log.css";
+import Cookies from "js-cookie";
 
 const Logout = ({ scrollPosition }) => {
   const navigate = useNavigate();
@@ -10,11 +11,11 @@ const Logout = ({ scrollPosition }) => {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
-        localStorage.clear(); // 선택적으로 로컬 스토리지를 지울 수 있습니다.
-        navigate("/"); // 로그아웃 후 '/'로 라우팅합니다.
+        Cookies.remove("email");
+        navigate("/");
       })
       .catch((error) => {
-        console.log("로그아웃 에러:", error);
+        console.log("Logout error:", error);
       });
   };
 
@@ -23,8 +24,8 @@ const Logout = ({ scrollPosition }) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const logoutTimer = setTimeout(() => {
-          handleLogout(); // 5 분 후 로그아웃 함수 호출
-        }, 300000);
+          handleLogout();
+        }, 1000 * (60 * 5)); // 1000ms =>1s  => 1000 *(60*5) =>5min
 
         return () => clearTimeout(logoutTimer);
       }
@@ -33,8 +34,14 @@ const Logout = ({ scrollPosition }) => {
     return () => unsubscribe();
   }, []);
 
- 
-  return <button className={scrollPosition > 30 ? "scrolled-log":"log"} onClick={handleLogout}>로그아웃</button>;
+  return (
+    <button
+      className={scrollPosition > 30 ? "scrolled-log" : "log"}
+      onClick={handleLogout}
+    >
+      Logout
+    </button>
+  );
 };
 
 export default Logout;

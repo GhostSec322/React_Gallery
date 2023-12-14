@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { FaCirclePlus } from "react-icons/fa6";
 import "./Catagory.css";
 import {
   collection,
@@ -259,64 +260,49 @@ function Category() {
   return (
     <div className="CataGory">
       <button className="newCatagory" onClick={openNewCategoryModal}>
-        카테고리 추가
-      </button>
-
-      {/* 이미지를 담을 컨테이너 */}
+        카테고리 추가 <FaCirclePlus className="plus" />
+      </button> 
       {renderButtons()}
-      <div id="image-container"></div>
+      <div id="image-container"/>
       {isModalOpen && (
         <div className="modal-background" onClick={closeModal}>
-          <div style={modalStyle}>
-            <span style={closeButtonStyle} onClick={closeModal}>
-              &times;
-            </span>
-            <button
-              className="delete"
-              onClick={() => handleImageDelete(selectedFileName)}
-            >
-              Delete
-            </button>
-            <p>
-              {selectedCatagory} / {selectedFileName}
-            </p>
-            {/* 이미지를 모달에 출력 */}
-
-            <div className="modalImgArea">
-              <img
-                src={selectedImage}
-                alt="Selected"
-                style={{ width: "100%", height: "auto" }}
-              />
-            </div>
+        <div style={modalStyle}>
+          <span style={closeButtonStyle} onClick={closeModal}>
+            &times;
+          </span>
+          <p>
+            {selectedCatagory} / {selectedFileName}
+          </p>
+          <div className="modalImgArea">
+            <img
+            src={selectedImage}
+            alt="Selected"
+            style={{width:'100%', height:"auto"}}
+             />
           </div>
+          <button className="delete" onClick={() => handleImageDelete(selectedFileName)}>
+              Delete
+          </button>
         </div>
+      </div>
       )}
 
-      {/* 새 카테고리 모달 */}
+    {/* 새 카테고리 모달 */}
       {isNewCategoryModalOpen && (
         <div className="modal-background" onClick={closeNewCategoryModal}>
           <div style={modalStyle}>
-            <span style={closeButtonStyle} onClick={closeNewCategoryModal}>
-              &times;
-            </span>
             <h2>새 카테고리 생성</h2>
-            <input
-              type="text"
-              value={isNewCategoryModalOpen ? inputValue : ""}
-              onChange={(e) => {
-                if (isNewCategoryModalOpen) {
-                  setInputValue(e.target.value);
-                }
-              }}
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            />
-            <button onClick={handleCreateClick}>생성</button>
+            <div className="createCatagoryInput">
+              <input 
+              type="text" 
+              value={isNewCategoryModalOpen ? inputValue : ""} 
+              onChange={(e) => { if (isNewCategoryModalOpen) { setInputValue(e.target.value); } }} 
+              onClick={(e) => { e.stopPropagation();  }} />
+            <button onClick={handleCreateClick}>생성</button></div>
           </div>
         </div>
       )}
+
     </div>
   );
 }

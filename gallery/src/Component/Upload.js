@@ -79,62 +79,59 @@ function Upload() {
     setSelectedImage(droppedFile);
   };
 
+  const cancelImg=()=>{
+    setSelectedImage(null);
+  }
+
+
   return (
-    <div className="setUpload">
-      <div className="detail">
-        <select
-          className="category"
-          value={selectedKey}
-          onChange={handleKeyChange}
-        >
-          <option value="">카테고리 선택</option>
-          {Object.keys(keyValueDict).map((key) => (
-            <option key={key} value={key}>
-              {key}
-            </option>
-          ))}
-        </select>
+    <div className='setUpload'>
 
-        <div
-          className="dragArea"
-          style={
-            selectedImage ? { backgroundColor: "rgba(240, 134, 134,0.3" } : {}
-          }
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-        >
-          <div className="filebox">
-            <label htmlFor="select-file">이미지 선택</label>
-            <p
-              style={
-                selectedImage ? { fontWeight: "bold", fontSize: "20px" } : {}
-              }
-            >
-              {selectedImage
-                ? "이미지가 선택되었습니다"
-                : "이미지를 선택하거나 드래그 해 주세요"}
-            </p>
-            <input id="select-file" type="file" onChange={handleChange} />
-          </div>
+    <div className='detail'>
+      <select className="category" value={selectedKey} onChange={handleKeyChange}>
+        <option value="">카테고리 선택</option>
+        {Object.keys(keyValueDict).map((key) => (
+          <option key={key} value={key}>
+            {key}
+          </option>
+        ))}
+      </select>
+      <div
+        className="dragArea"
+        style={selectedImage ? { backgroundColor: 'rgba(240, 134, 134,0.2'} : {}}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
+         
+        <div 
+          className='filebox'>
+          <label for="select-file">{selectedImage ? '이미지 변경'  : '이미지 선택'}</label>
+          <p 
+            style={selectedImage ? { fontWeight: 'bold', fontSize: '20px'} : {}}
+          >{selectedImage ? '이미지가 선택되었습니다'  : '이미지를 선택하거나 드래그 해 주세요'}</p>
+          
+          <input id="select-file" type="file" onChange={handleChange} />
         </div>
-
-        {selectedImage && (
-          <div className="fileInfo">
-            <p>{selectedImage.name}</p>
-            <progress className="progress" value={uploadProgress} max="100" />
-            {uploadProgress === 100 && (
-              <div className="uploadComplete">
-                <p>완료</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        <button className="upload-button" onClick={handleUpload}>
-          Upload
-        </button>
       </div>
+
+      {selectedImage && 
+      <div className="fileInfo">
+        <p>{selectedImage.name}</p>
+        <progress className="progress" value={uploadProgress} max="100" /> {/* 프로그래스 바 */}
+        {uploadProgress === 100 && 
+          <div className="uploadComplete">
+            <p>완료</p>
+          </div>
+        }
+      <p className="cancel" onClick={cancelImg}>&times;</p>
+      </div> 
+      }
+      
+      
+      <button className='upload-button' onClick={handleUpload}>Upload</button>
     </div>
+    
+  </div>
   );
 }
 

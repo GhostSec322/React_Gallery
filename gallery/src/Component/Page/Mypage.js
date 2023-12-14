@@ -16,6 +16,7 @@ function Mypage() {
   const [selectedKey, setSelectedKey] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
+  const [selectedButton, setSelectedButton] = useState("");
 
   const [updatedKeyValueDict, setUpdatedKeyValueDict] = useState({});
   const [categoryPath, setCategoryPath] = useState(null);
@@ -68,6 +69,7 @@ function Mypage() {
   }, []);
 
   const handleButtonClick = (key) => {
+    setSelectedButton(key);
     setSelectedKey(key);
     setShowModal(true);
   };
@@ -191,92 +193,102 @@ function Mypage() {
 
   const closePopup = () => {
     setShowModal(false);
+    setSelectedButton(null);
   };
 
   return (
     
 <div className="setBackground">
-        
-        <div className="MyapiArea">
-          <div
-            className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"}
-            id="topMenuBar"
-          >
-            <div className={scrollPosition > 30 ? "scrolled-logo":"logo"}>
-            MyPage
-            </div>
-            <div className="icons">
-                <Link className={scrollPosition > 30 ? "scrolled-link":"link"} to="/Home">Go to Gallery</Link>
-                </div>
-            </div>
-          
-  
-          {/* api연동 그림 영역 */}
        
-            <BannerImg></BannerImg>
-  
+       <div className="MyapiArea">
+         <div
+           className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"}
+           id="topMenuBar"
+         >
+           <div className={scrollPosition > 30 ? "scrolled-logo":"logo"}>
+           MyPage
+           </div>
+           <div className="icons">
+               <Link className={scrollPosition > 30 ? "scrolled-link":"link"} to="/Home">Go to Gallery</Link>
+               </div>
+           </div>
+         
+ 
+         {/* api연동 그림 영역 */}
+      
+           <BannerImg></BannerImg>
+ 
 
-          <div className="search">
+         <div className="search">
 
-          <div className="info">
-            <div className="title">
-              Mypage
-            </div>
-            <div className="body">
-            여러분의 정보와 생성한 카테고리를 확인/삭제하세요
-            </div>  
-          </div>
-          
-        </div>
-        </div>
+         <div className="info">
+           <div className="title">
+             Mypage
+           </div>
+           <div className="body">
+           여러분의 정보와 생성한 카테고리를 확인/삭제하세요
+           </div>  
+         </div>
+         
+       </div>
+       </div>
 
-        <div className="userData">
-         {userProfile && (
-          <div>
-            <div className="photoArea" style={{ zIndex: 2 }}>
-              <img src={userProfile.photoURL} alt="프로필 사진" />
-            </div>
-            
-            <p>사용자 이름: {userProfile.displayName}</p>
-            <p>이메일: {userProfile.email}</p>
-            <button onClick={handleAccountDeletion}>계정탈퇴</button>
-          </div>
-        )}
+       <div className="userData">
+        {userProfile && (
+         <div >
+           <div className="photo_quit">
+             <div className="photoArea" style={{ zIndex: 2 }}>
+               <img src={userProfile.photoURL} alt="프로필 사진" />
+             </div>
+             <button className="quit" onClick={handleAccountDeletion}>계정탈퇴</button>
+           </div>
+           <div className="name_email">
+             <p className="name">{userProfile.displayName}</p>
+             <p className="email">({userProfile.email})</p>
+           </div>
+         </div>
+       )}
 
-        <div className="profileData">
-          <div className="catagoryArea">
-            <p>생성한 카테고리</p>
-            {Object.keys(keyValueDict).map((key) => (
-            <button className="catagory" key={key} onClick={() => handleButtonClick(key)}>
-              {key}
-            </button>
-          ))}
-          </div>
-     
-          {showModal && (
-            <div className="Myoverlay" onClick={closePopup} style={{ zIndex: 1000}}>
-              <div className="modal" style={{ zIndex: 999}}>
-                <p>
-                  "{selectedKey}" 카테고리를 삭제하시겠습니까?{<br></br>} (삭제시 해당 이미지는
-                   모두 삭제 되며 복구가 불가능 합니다 이에 동의하시면 삭제버튼을
-                   누르세요)
-                </p>
-                <div className="modalButtonArea">
-                  <button className="agree" onClick={handleDeleteConfirmation}>삭제</button>
-                  <button className="disAgree" onClick={handleCancel}>취소</button>
-                </div>
-                
-              </div>
-            </div>
-            
-          )}
+       <div className="profileData">
+         <div className="catagoryArea">
+           <div className="catagoryTextArea">
+             <p style={{fontSize:"30px", marginTop:"10px", marginBottom:"10px", padding:0}}>생성한 카테고리</p>
+             <p>카테고리를 삭제하고 싶다면 클릭하세요</p>
+           </div>      
+           {Object.keys(keyValueDict).map((key) => (
+           <button  
+             className={`catagory ${selectedButton === key ? 'selected' : ''}`}  
+             key={key} 
+             onClick={() => handleButtonClick(key)}>
+             {key}
+           </button>
+         ))}
+         </div>
+    
+         {showModal && (
+           <div className="Myoverlay" onClick={closePopup} style={{ zIndex: 1000}}>
+             <div className="modal" style={{ zIndex: 999}}>
+               <p>
+                 "{selectedKey}" 카테고리를 삭제하시겠습니까?{<br></br>} (삭제시 해당 이미지는
+                  모두 삭제 되며 복구가 불가능 합니다 이에 동의하시면 삭제버튼을
+                  누르세요)
+               </p>
+               <div className="modalButtonArea">
+                 <button className="agree" onClick={handleDeleteConfirmation}>삭제</button>
+                 <button className="disAgree" onClick={handleCancel}>취소</button>
+               </div>
+               
+             </div>
+           </div>
+           
+         )}
 
-          
-        </div>
+         
+       </div>
 
-        </div>
+       </div>
 
-      </div>
+     </div>
   );
 }
 

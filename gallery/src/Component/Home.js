@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom"; // useNavigate 추가
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import "./Pixabay.css";
 import BannerImg from "../api/BannerImg";
+import { MdOutlineExpandMore } from "react-icons/md";
+import { MdUpload } from "react-icons/md";
 
 function Home() {
   const keyValueDict = useSelector((state) => state.keyValueDict);
@@ -106,50 +108,48 @@ function Home() {
 
   return (
     <div className="setBackground">
+        
       <div className="apiArea">
         <div
           className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"}
           id="topMenuBar"
         >
-          <div className={scrollPosition > 30 ? "scrolled-logo" : "logo"}>
+          <div className={scrollPosition > 30 ? "scrolled-logo":"logo"}>
             Gallery
-          </div>
-          <div className="icons">
-            <button
-              style={
-                isMenuPopupOpen
-                  ? { backgroundColor: "rgba(173, 173, 173, 0.356)" }
-                  : {}
-              }
-              className={scrollPosition > 30 ? "scrolled-more" : "more"}
-              onClick={() => openMunuPopup()}
-            >
-              더보기
-            </button>
-            <button className="uploadButton" onClick={() => openPopup()}>
-              업로드
-            </button>
-            {UploadPopup}
-            {menuPopup}
-          </div>
+        </div>
+              <div className="icons">
+                <button 
+                  style={isMenuPopupOpen ? { backgroundColor: 'rgba(173, 173, 173, 0.356)' } : {}}
+                  className={scrollPosition > 30 ? "scrolled-more":"more"}  onClick={()=>openMunuPopup()}>더보기<MdOutlineExpandMore className="moreIcon" size="20px" /></button>
+                <button className="uploadButton" onClick={() => openPopup()}> <MdUpload className="uploadIcon" />업로드</button>
+                {UploadPopup}
+                {menuPopup}
+              </div>
+          
         </div>
 
         {/* api연동 그림 영역 */}
-
-        <BannerImg></BannerImg>
+     
+          <BannerImg></BannerImg>
+     
 
         <div className="search">
+
           <div className="info">
-            <div className="title">Gallery</div>
-            <div className="body">
-              여러분의 사진을 카테고리 별로 분류하고 저장하세요
+            <div className="title">
+              Gallery
             </div>
+            <div className="body">
+            여러분의 사진을 카테고리 별로 분류하고 저장하세요 
+            </div>  
           </div>
+          
         </div>
+
       </div>
 
       <div className="noneApi">
-        <Catagory />
+          <Catagory />
       </div>
     </div>
   );

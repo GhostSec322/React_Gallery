@@ -1,135 +1,185 @@
 
 .MyapiArea{
-    width: 100%;
-    background-color: #bbb;
-    /* padding-bottom:10%; */
-    height: 360px;
-    overflow:hidden ;
-    position: relative;
-    margin:0 auto;
-  }
-  .apiArea h1{
-    position: absolute;
-    top: 10%;
-    left: 40%;
-  
-  }
-  
-  .setBackground{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  
-  
-  
-  
-  .scroll-color {
-    background-color:white;
-    transition: 0.3s;
-  }
-  
-  .scrolled-color { 
-    background-color:transparent;
-    transition: 0.3s;
-  }
-  
-  .banner img{
-    width: 100%;
-    height: 100%;
-  }
-  
-  .Myoverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.212); /* 반투명한 어두운 배경 */
-  }
-  
-  .modal {
-    border-radius: 10px;
-    width: auto;
-    height: auto;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #fff;
-    padding: 15px;
-    border: 1px solid rgb(189, 187, 187);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
+  background-color: #bbb;
+  /* padding-bottom:10%; */
+  height: 360px;
+  overflow:hidden ;
+  position: relative;
+  margin:0 auto;
+}
+.apiArea h1{
+  position: absolute;
+  top: 10%;
+  left: 40%;
+
+}
+
+.setBackground{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.Myoverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.212); /* 반투명한 어두운 배경 */
+}
+
+.modal {
+  border-radius: 10px;
+  width: auto;
+  height: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 15px;
+  border: 1px solid rgb(189, 187, 187);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userData{
+  position: relative;
+  z-index: 2;
+  top: -80px;
+  width: 90%;
+}
+
+.photoArea{
+  width: 150px;
+  height: 150px;
+  border: 4px solid black;
+  background-color: white;
+}
+
+.photo_quit{
+   display: flex;
+   align-items: flex-end;
+}
+
+.quit{
+  margin-left: 10px;
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+.photoArea img{
+  width: 100%;
+  height: 100%;
+}
+
+.profileData{
+  /*여기서 이미지영역 넓이 지정*/
+  width: 100%;
+  height: auto;
+  border: 3px dashed black; 
+  top: 560px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  align-items: center;
+  margin-bottom: 500px;
+}
+
+.profileData p{
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.catagoryArea{
+  margin-bottom: 50px;
+}
+.catagoryTextArea{
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.catagoryTextArea p{
+  margin:0;
+}
+.catagory{
+  border: none;
+  margin-top: 10px;
+  margin-right: 20px;
+  width : 100px;
+  height : 34px;
+  border-radius: 40px;
+  background-color: rgba(173, 173, 173, 0.327);
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.catagory.selected{
+  background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+}
+.catagory:hover{
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
   }
 
-  .userData{
-    position: relative;
-    z-index: 2;
-    top: -80px;
-    width: 90%;
-  }
-  
-  .photoArea{
-    width: 150px;
-    height: 150px;
-    border: 4px solid black;
-    background-color: white;
-  }
-  
-  .photoArea img{
-    width: 100%;
-    height: 100%;
-  }
+.agree{
+border: none;
+margin-right: 20px;
+width : 100px;
+height : 34px;
+border-radius: 40px;
+background-color: rgba(173, 173, 173, 0.327);
+color: black;
+font-weight: bold;
+font-size: 14px;
+}
 
-  .profileData{
-    /*여기서 이미지영역 넓이 지정*/
-    width: 100%;
-    height: 500px;
-    border: 3px dashed black; 
-    top: 560px;
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    align-items: center;
-  }
+.agree:hover{
+color: white;
+background-color: rgba(0, 0, 0, 0.8);
+font-size: 16px;
+cursor: pointer;
+}
 
-  .profileData p{
-    font-weight: bold;
-    font-size: 18px;
-  }
+.disAgree{
+border: none;
+margin-right: 20px;
+width : 100px;
+height : 34px;
+border-radius: 40px;
+background-color: rgba(173, 173, 173, 0.327);
+color: black;
+font-weight: bold;
+font-size: 14px;
+}
 
-  .catagoryArea p{
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-  }
+.disAgree:hover{
+color: white;
+background-color: rgba(0, 0, 0, 0.8);
+font-size: 16px;
+cursor: pointer;
+}
 
-  .catagory{
-    border: none;
-    margin-right: 20px;
-    width : 100px;
-    height : 34px;
-    border-radius: 40px;
-    background-color: rgba(173, 173, 173, 0.8);
-    color: black;
-    font-weight: bold;
-    font-size: 14px;
-  }
+.name{
+font-weight: bold;
+font-size: 40px;
+margin: 0;
+}
 
-    .catagory:hover{
-      color: white;
-    }
- /* .modalButtonArea{
-    border: 1px solid;
- } */
- .agree{
-  margin-right: 10px;
-  width: 60px;
- }
+.email{
+margin: 0;
+margin-bottom: 10px;
+margin-left: 5px;
+font-weight: bolder;
+}
 
- .disAgree{
-  width: 60px;
- }
+.name_email{
+display: flex;
+align-items: flex-end;
+}

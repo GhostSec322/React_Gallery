@@ -22,6 +22,10 @@
   /* border: 1px solid black; */
 }
 
+.img:hover{
+  cursor: pointer;
+}
+
 .img img{
   width: 100%;
   height: 100%;
@@ -197,6 +201,7 @@ border-radius: 16px;
 .download-button:hover{
   font-size: 26px;
   background-color: rgb(25, 230, 25);
+  cursor: pointer;
 }
 
 .link{
@@ -243,12 +248,15 @@ border-radius: 16px;
 
 
 .more{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   margin-right: 20px;
   width : auto;
   padding-left: 10px;
   padding-right: 10px;
-  height : 40px;
+  text-align: center;
   border-radius: 40px;
   background-color: transparent;
   color: white;
@@ -259,9 +267,13 @@ border-radius: 16px;
 .more:hover{
   background-color: rgba(173, 173, 173, 0.356);
   font-size: 14px;
+  cursor: pointer;
 }
 
 .scrolled-more{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   margin-right: 20px;
   width : auto;
@@ -278,18 +290,20 @@ border-radius: 16px;
 .scrolled-more:hover{
   background-color: rgba(173, 173, 173, 0.356);
   font-size: 14px;
+  cursor: pointer;
 }
 
 
 
 
 .uploadButton{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   margin-right: 35px;
-  width : 90px;
-  padding-left: 20px;
+  padding-left: 15px;
   padding-right: 20px;
-  height : 40px;
   border-radius: 20px;
   background-color: rgb(4, 168, 92);
   color: rgb(255, 255, 255);
@@ -301,6 +315,11 @@ border-radius: 16px;
   color: white;
   background-color: rgb(10, 192, 107);
   font-size: 15px;
+  cursor: pointer;
+}
+
+.uploadIcon{
+  margin-right: 4px;
 }
 
 .UploadPopup {

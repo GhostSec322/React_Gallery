@@ -16,6 +16,7 @@
   .log:hover{
     background-color: rgba(173, 173, 173, 0.356);
     font-size: 14px;
+    cursor: pointer;
   }
 
   .scrolled-log{
@@ -36,5 +37,6 @@
   .scrolled-log:hover{
     background-color: rgba(173, 173, 173, 0.356);
     font-size: 14px;
+    cursor: pointer;
   }
   

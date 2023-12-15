@@ -4,10 +4,9 @@ import { auth, db, storage } from "../config";
 import { getDoc, doc, collection, setDoc, deleteDoc } from "firebase/firestore";
 import { ref, deleteObject, listAll } from "firebase/storage";
 import { readKeyValue, updateKeyValue } from "../store";
-import "./Mypage.css"
+import "./Mypage.css";
 import { Link } from "react-router-dom";
 import BannerImg from "../../api/BannerImg";
-
 
 function Mypage() {
   const dispatch = useDispatch();
@@ -44,7 +43,7 @@ function Mypage() {
       await deleteObject(ref(storage, folderPath));
       console.log(`Folder ${folderPath} deleted successfully.`);
     } catch (error) {
-      console.error("Error deleting folder and files:", error.message);
+      console.log("Error deleting folder and files:", error.message);
       //   alert(`Error deleting folder and files: ${error.message}`);
     }
   };
@@ -108,6 +107,7 @@ function Mypage() {
       alert(`Category "${selectedKey}" has been deleted.`);
       setSelectedKey(null);
       setShowModal(false);
+
       console.log("Updated Redux State:", updatedKeyValueDict);
 
       await handleDeleteFolder(categoryPath);
@@ -116,7 +116,6 @@ function Mypage() {
     } catch (error) {
       console.error("Error deleting category:", error.message);
       // alert(`Error deleting category: ${error.message}`);
-
       const updatedKeyValueDict = { ...keyValueDict };
       delete updatedKeyValueDict[selectedKey];
 
@@ -137,6 +136,8 @@ function Mypage() {
       await handleDeleteFolder(categoryPath);
 
       dispatch(updateKeyValue(selectedKey, undefined));
+      // 삭제 후에 keyValueDict가 업데이트되었으므로 페이지 새로고침
+      window.location.reload();
     }
   };
 
@@ -189,7 +190,7 @@ function Mypage() {
     return () => {
       window.removeEventListener("scroll", updateScroll);
     };
-  }, []); 
+  }, []);
 
   const closePopup = () => {
     setShowModal(false);
@@ -197,98 +198,111 @@ function Mypage() {
   };
 
   return (
-    
-<div className="setBackground">
-       
-       <div className="MyapiArea">
-         <div
-           className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"}
-           id="topMenuBar"
-         >
-           <div className={scrollPosition > 30 ? "scrolled-logo":"logo"}>
-           MyPage
-           </div>
-           <div className="icons">
-               <Link className={scrollPosition > 30 ? "scrolled-link":"link"} to="/Home">Go to Gallery</Link>
-               </div>
-           </div>
-         
- 
-         {/* api연동 그림 영역 */}
-      
-           <BannerImg></BannerImg>
- 
+    <div className="setBackground">
+      <div className="MyapiArea">
+        <div
+          className={scrollPosition > 30 ? "scroll-color" : "scrolled-color"}
+          id="topMenuBar"
+        >
+          <div className={scrollPosition > 30 ? "scrolled-logo" : "logo"}>
+            MyPage
+          </div>
+          <div className="icons">
+            <Link
+              className={scrollPosition > 30 ? "scrolled-link" : "link"}
+              to="/Home"
+            >
+              Go to Gallery
+            </Link>
+          </div>
+        </div>
 
-         <div className="search">
+        {/* api연동 그림 영역 */}
 
-         <div className="info">
-           <div className="title">
-             Mypage
-           </div>
-           <div className="body">
-           여러분의 정보와 생성한 카테고리를 확인/삭제하세요
-           </div>  
-         </div>
-         
-       </div>
-       </div>
+        <BannerImg></BannerImg>
 
-       <div className="userData">
+        <div className="search">
+          <div className="info">
+            <div className="title">Mypage</div>
+            <div className="body">
+              여러분의 정보와 생성한 카테고리를 확인/삭제하세요
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="userData">
         {userProfile && (
-         <div >
-           <div className="photo_quit">
-             <div className="photoArea" style={{ zIndex: 2 }}>
-               <img src={userProfile.photoURL} alt="프로필 사진" />
-             </div>
-             <button className="quit" onClick={handleAccountDeletion}>계정탈퇴</button>
-           </div>
-           <div className="name_email">
-             <p className="name">{userProfile.displayName}</p>
-             <p className="email">({userProfile.email})</p>
-           </div>
-         </div>
-       )}
+          <div>
+            <div className="photo_quit">
+              <div className="photoArea" style={{ zIndex: 2 }}>
+                <img src={userProfile.photoURL} alt="프로필 사진" />
+              </div>
+              <button className="quit" onClick={handleAccountDeletion}>
+                계정탈퇴
+              </button>
+            </div>
+            <div className="name_email">
+              <p className="name">{userProfile.displayName}</p>
+              <p className="email">({userProfile.email})</p>
+            </div>
+          </div>
+        )}
 
-       <div className="profileData">
-         <div className="catagoryArea">
-           <div className="catagoryTextArea">
-             <p style={{fontSize:"30px", marginTop:"10px", marginBottom:"10px", padding:0}}>생성한 카테고리</p>
-             <p>카테고리를 삭제하고 싶다면 클릭하세요</p>
-           </div>      
-           {Object.keys(keyValueDict).map((key) => (
-           <button  
-             className={`catagory ${selectedButton === key ? 'selected' : ''}`}  
-             key={key} 
-             onClick={() => handleButtonClick(key)}>
-             {key}
-           </button>
-         ))}
-         </div>
-    
-         {showModal && (
-           <div className="Myoverlay" onClick={closePopup} style={{ zIndex: 1000}}>
-             <div className="modal" style={{ zIndex: 999}}>
-               <p>
-                 "{selectedKey}" 카테고리를 삭제하시겠습니까?{<br></br>} (삭제시 해당 이미지는
-                  모두 삭제 되며 복구가 불가능 합니다 이에 동의하시면 삭제버튼을
-                  누르세요)
-               </p>
-               <div className="modalButtonArea">
-                 <button className="agree" onClick={handleDeleteConfirmation}>삭제</button>
-                 <button className="disAgree" onClick={handleCancel}>취소</button>
-               </div>
-               
-             </div>
-           </div>
-           
-         )}
+        <div className="profileData">
+          <div className="catagoryArea">
+            <div className="catagoryTextArea">
+              <p
+                style={{
+                  fontSize: "30px",
+                  marginTop: "10px",
+                  marginBottom: "10px",
+                  padding: 0,
+                }}
+              >
+                생성한 카테고리
+              </p>
+              <p>카테고리를 삭제하고 싶다면 클릭하세요</p>
+            </div>
+            {Object.keys(keyValueDict).map((key) => (
+              <button
+                className={`catagory ${
+                  selectedButton === key ? "selected" : ""
+                }`}
+                key={key}
+                onClick={() => handleButtonClick(key)}
+              >
+                {key}
+              </button>
+            ))}
+          </div>
 
-         
-       </div>
-
-       </div>
-
-     </div>
+          {showModal && (
+            <div
+              className="Myoverlay"
+              onClick={closePopup}
+              style={{ zIndex: 1000 }}
+            >
+              <div className="modal" style={{ zIndex: 999 }}>
+                <p>
+                  "{selectedKey}" 카테고리를 삭제하시겠습니까?{<br></br>}{" "}
+                  (삭제시 해당 이미지는 모두 삭제 되며 복구가 불가능 합니다 이에
+                  동의하시면 삭제버튼을 누르세요)
+                </p>
+                <div className="modalButtonArea">
+                  <button className="agree" onClick={handleDeleteConfirmation}>
+                    삭제
+                  </button>
+                  <button className="disAgree" onClick={handleCancel}>
+                    취소
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 
